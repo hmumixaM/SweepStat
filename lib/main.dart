@@ -7,9 +7,15 @@ import 'load_configuration.dart';
 import 'menu_buttons.dart';
 import 'recent_results.dart';
 
+import 'screen/MyApp.dart';
+
+
 void main() {
-  runApp(MyApp());
+  runApp(MyNewApp());
 }
+
+
+/******** Previous Group's Code -- No need to change ********/
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
