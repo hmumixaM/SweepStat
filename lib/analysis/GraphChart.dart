@@ -6,14 +6,13 @@ class GraphChart extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _GraphChart();
   }
-
 }
 
 class _GraphChart extends State<GraphChart> {
   @override
   Widget build(BuildContext context) {
     return LineChart(LineChartData(
-        maxX: 8,
+        maxX: 0.5,
         minX: 0,
         clipData: FlClipData.all(),
         lineBarsData: [
@@ -50,19 +49,18 @@ class _GraphChart extends State<GraphChart> {
           leftTitle: AxisTitle(
               showTitle: true,
               titleText: "Current/nA",
-              textStyle: TextStyle(
-                  fontStyle: FontStyle.italic, color: Colors.black)),
+              textStyle:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.black)),
           bottomTitle: AxisTitle(
               showTitle: true,
               titleText: "Potential/V",
-              textStyle: TextStyle(
-                  fontStyle: FontStyle.italic, color: Colors.black)),
+              textStyle:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.black)),
           topTitle: AxisTitle(
               showTitle: true,
               titleText: "Current Vs Potential",
-              textStyle: TextStyle(
-                  fontStyle: FontStyle.italic, color: Colors.black)),
+              textStyle:
+                  TextStyle(fontStyle: FontStyle.italic, color: Colors.black)),
         )));
   }
-
 }
