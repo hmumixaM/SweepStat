@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sweep_stat_app/analysis/GraphChart.dart';
+import 'package:sweep_stat_app/analysis/AnalysisPage.dart';
 import '../bluetooth/BluetoothIcon.dart';
 import '../drawer/DrawerPage.dart';
 import '../end_drawer/EndDrawerPage.dart';
 
+import 'dart:developer' as developer;
+
+
 class MyNewApp extends StatelessWidget {
   const MyNewApp({Key key}) : super(key: key);
-
   static const appTitle = 'SweepStat';
 
   @override
@@ -43,7 +45,7 @@ class MyHomePage extends StatelessWidget {
                   icon: Icon(Icons.settings)),
             )
           ]),
-      body: GraphChart(),
+      body: AnalysisPage(),
       drawer: DrawerPage(),
       endDrawer: EndDrawerPage(),
     );
