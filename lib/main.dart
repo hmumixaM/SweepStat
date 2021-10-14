@@ -9,7 +9,6 @@ import 'recent_results.dart';
 
 import 'screen/MyApp.dart';
 
-
 void main() {
   runApp(MyNewApp());
 }
