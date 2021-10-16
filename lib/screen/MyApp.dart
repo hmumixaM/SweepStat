@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../bluetooth/BluetoothMenu.dart';
 import 'package:sweep_stat_app/analysis/AnalysisPage.dart';
-import '../bluetooth/BluetoothIcon.dart';
 import '../drawer/DrawerPage.dart';
 import '../end_drawer/EndDrawerPage.dart';
 
@@ -38,7 +38,7 @@ class MyHomePage extends StatelessWidget {
                 icon: Icon(Icons.menu)),
           ),
           actions: <Widget>[
-            BluetoothIcon(),
+            BluetoothMenu(),
             Builder(
               builder: (context) => IconButton(
                   onPressed: () => Scaffold.of(context).openEndDrawer(),
