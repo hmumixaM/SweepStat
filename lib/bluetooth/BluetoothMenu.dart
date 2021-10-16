@@ -16,11 +16,12 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
           context: context,
           builder: (BuildContext context) {
             return ListView(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.all(8),
               children: [
-                const Text(
-                  "Select Your SweepStat",
-                ),
+                const Text("Select Your SweepStat", style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),),
                 ListTile(
                   title: const Text("SweepStat 001"),
                   onTap: () {
