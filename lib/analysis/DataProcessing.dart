@@ -15,7 +15,7 @@ class DataProcessing {
     List<List<dynamic>> experimentData = null;
     try {
       var s =  await rootBundle.loadString('assets/example_data.csv');
-      experimentData = const CsvToListConverter().convert(s);
+      experimentData = CsvToListConverter(eol: '\n').convert(s);
       return experimentData;
     } catch (e) {
       print(e);
@@ -33,7 +33,7 @@ class DataProcessing {
       // print(_roundTo(line[i][0], 3));
       // print(_roundTo(line[i+1][0], 3) - _roundTo(line[i][0], 3));
       if (gap != roundTo(line[i+1][0], 3) - roundTo(line[i][0], 3)) {
-        current.add(FlSpot(roundTo(line[line.length-1][0], 3), roundTo(line[line.length-1][1], 6)));
+        // current.add(FlSpot(roundTo(line[line.length-1][0], 3), roundTo(line[line.length-1][1], 6)));
         _curves.add(current);
         current = <FlSpot>[];
         gap = roundTo(line[i+1][0], 3) - roundTo(line[i][0], 3);
