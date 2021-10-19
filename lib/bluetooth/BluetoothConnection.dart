@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_blue/flutter_blue.dart';
 
 const String sweepstatServiceUUID = "0000FFE0-0000-1000-8000-00805F9B34FB";
