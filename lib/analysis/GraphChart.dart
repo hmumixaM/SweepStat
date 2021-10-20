@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:sweep_stat_app/analysis/DataProcessing.dart';
 
+import 'DataProcessing.dart';
 import 'LineChartWidget.dart';
 
 class GraphChart extends StatefulWidget {

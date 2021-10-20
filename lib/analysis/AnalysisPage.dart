@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sweep_stat_app/analysis/DataProcessing.dart';
 
 import 'GraphChart.dart';
 import 'DataProcessing.dart';
