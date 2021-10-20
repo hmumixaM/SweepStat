@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 class BluetoothManager {
   static BluetoothConnectionSim sim;
   static FlutterBlue blueInstance = FlutterBlue.instance;
-  static List<BluetoothDevice> deviceList;
+  static List<BluetoothDevice> deviceList = [];
   static BluetoothDevice currentDevice;
 
   //needs error handling for devices without bluetooth support
   static void scan() {
-    var foundDevices = [];
+    List<BluetoothDevice> foundDevices = [];
 
     blueInstance.startScan(timeout: Duration(seconds: 4));
     blueInstance.scanResults.listen((results) {
