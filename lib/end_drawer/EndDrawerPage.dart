@@ -1,4 +1,18 @@
 import 'package:flutter/material.dart';
+import 'ValueInput.dart';
+import 'DropDownInput.dart';
+import '../screen/StateWidget.dart';
+
+// Helper functions for checking if correct range
+String voltValid(String num) {
+  double n = double.parse(num);
+  return (n >= -1.5 && n <= 1.5) ? null : "Enter a number between -1.5 and 1.5";
+}
+
+String segmentsValid(String num) {
+  double n = double.parse(num);
+  return n.floor() == n  && n > 0 ? null : "Must be an integer greater than 0";
+}
 
 class EndDrawerPage extends StatelessWidget {
   @override
@@ -21,6 +35,11 @@ class EndDrawerPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                ValueInput(
+                    'Initial Voltage (V)',
+                        (double d) => {BackEnd.of(context).newArgument(d)},
+                    BackEnd.of(context).state.testNum.toString(),
+                    voltValid),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Initial Voltage (V)',

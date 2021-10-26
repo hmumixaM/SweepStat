@@ -30,6 +30,13 @@ class _StateWidgetState extends State<StateWidget> {
     setState(() => state = newState);
   }
 
+  void newArgument(double testNums) {
+    final newState = state.copy(testNum: testNums);
+
+
+    setState(() => state = newState);
+  }
+
   @override
   Widget build(BuildContext context) => BackEnd(
     child: widget.child,
