@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'GraphChart.dart';
 import 'DataProcessing.dart';
+import 'sample.dart';
 
 class AnalysisPage extends StatelessWidget {
   @override
@@ -20,6 +21,7 @@ class AnalysisPage extends StatelessWidget {
               right: 15,
             ),
             child: GraphChart(data),
+            // child: LineChartSample1(),
           ),
         ),
         Padding(
