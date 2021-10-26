@@ -3,9 +3,7 @@ import '../bluetooth/BluetoothMenu.dart';
 import 'package:sweep_stat_app/analysis/AnalysisPage.dart';
 import '../drawer/DrawerPage.dart';
 import '../end_drawer/EndDrawerPage.dart';
-
-import 'dart:developer' as developer;
-
+import 'StateWidget.dart';
 
 class MyNewApp extends StatelessWidget {
   const MyNewApp({Key key}) : super(key: key);
@@ -13,10 +11,12 @@ class MyNewApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: appTitle,
-      home: MyHomePage(title: appTitle),
-      debugShowCheckedModeBanner: false,
+    return StateWidget(
+      child: MaterialApp(
+        title: appTitle,
+        home: MyHomePage(title: appTitle),
+        debugShowCheckedModeBanner: false,
+      )
     );
   }
 }
