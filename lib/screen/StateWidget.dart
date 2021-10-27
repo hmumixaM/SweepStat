@@ -33,7 +33,6 @@ class _StateWidgetState extends State<StateWidget> {
   void newArgument(double testNums) {
     final newState = state.copy(testNum: testNums);
 
-
     setState(() => state = newState);
   }
 

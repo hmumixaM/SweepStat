@@ -28,6 +28,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(BackEnd.of(context).state.testNum);
     return Scaffold(
       appBar: AppBar(
           title: Text(title),
