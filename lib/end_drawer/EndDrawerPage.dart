@@ -32,19 +32,22 @@ class _EndDrawerpage extends State<EndDrawerPage> {
     });
   }
 
-  void saveSettings() {
+  bool saveSettings() {
     if (_mode == "Amperometry") {
       if (_fromKeyA.currentState.validate()) {
         _settings = AmperometrySettings();
         _fromKeyA.currentState.save();
-      }
+      } else
+        return false;
     } else {
       if (_fromKeyV.currentState.validate()) {
         _settings = AmperometrySettings();
         _fromKeyV.currentState.save();
-      }
+      } else
+        return false;
     }
     BackEnd.of(context).newSettings(_settings);
+    return true;
   }
 
   @override
@@ -72,12 +75,14 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             onChange: modeChange,
           ),
           _mode == "Amperometry"
-              ? buildAmperometryForm()
-              : buildVoltammetryForm(),
+              ? buildAmperometryForm(context)
+              : buildVoltammetryForm(context),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed: saveSettings,
+              onPressed: () {
+                if (saveSettings()) Navigator.of(context).pop();
+              },
               child: const Text('Apply'),
             ),
           ),
@@ -85,7 +90,11 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                saveSettings();
+                if (saveSettings())
+                  buildAlterDialog(context).then((fileName) {
+                    _settings.writeToFile(fileName, "settings");
+                    print(fileName);
+                  });
               },
               child: const Text('Save'),
             ),
@@ -95,7 +104,37 @@ class _EndDrawerpage extends State<EndDrawerPage> {
     );
   }
 
-  Widget buildAmperometryForm() {
+  Future<String> buildAlterDialog(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+              title: Text("Input the file name: "),
+              content: TextField(
+                controller: controller,
+              ),
+              actions: <Widget>[
+                MaterialButton(
+                  elevation: 0.5,
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                MaterialButton(
+                  elevation: 0.5,
+                  child: Text("Save"),
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text.toString());
+                  },
+                )
+              ]);
+        });
+  }
+
+  Widget buildAmperometryForm(BuildContext context) {
     return Form(
       key: _fromKeyA,
       child: Column(
@@ -168,7 +207,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
     );
   }
 
-  Widget buildVoltammetryForm() {
+  Widget buildVoltammetryForm(BuildContext context) {
     return Form(
       key: _fromKeyV,
       child: Column(
