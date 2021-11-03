@@ -91,7 +91,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             child: ElevatedButton(
               onPressed: () {
                 if (saveSettings())
-                  buildAlterDialog(context).then((fileName) {
+                  buildAlertDialog(context).then((fileName) {
                     _settings.writeToFile(fileName, "settings");
                     print(fileName);
                   });
@@ -104,7 +104,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
     );
   }
 
-  Future<String> buildAlterDialog(BuildContext context) {
+  Future<String> buildAlertDialog(BuildContext context) {
     TextEditingController controller = TextEditingController();
 
     return showDialog(
