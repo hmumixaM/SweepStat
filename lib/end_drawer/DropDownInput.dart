@@ -6,6 +6,7 @@ class DropDownInput extends StatefulWidget {
   final String hint;
   final initialVal;
   final Function callback;
+  final Function onChange;
 
   const DropDownInput(
       {Key key,
@@ -13,7 +14,8 @@ class DropDownInput extends StatefulWidget {
         this.values,
         this.hint = '',
         this.initialVal,
-        this.callback})
+        this.callback,
+        this.onChange = null,})
       : super(key: key);
 
   @override
@@ -35,6 +37,8 @@ class _DropDownInputState extends State<DropDownInput> {
       hint: Text(widget.hint),
       value: selectedInput,
       onChanged: (value) {
+        if (widget.onChange != null)
+          widget.onChange(value);
         setState(() {
           selectedInput = value;
         });

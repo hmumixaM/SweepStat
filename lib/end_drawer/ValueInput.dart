@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 class ValueInput extends StatelessWidget {
   ValueInput(this.text, this.callback, this.value, this.validator);
 
-  final String text,
-      value; // Text is displayed name, units is the displayed unit val at end
+  final String text, value; // Text is displayed name, units is the displayed unit val at end
   final Function callback, validator; // Callback called on save
 
   @override
