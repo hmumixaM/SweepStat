@@ -48,6 +48,6 @@ class DataProcessing {
   }
 
   static double roundTo(double num, int amount) {
-    return (num * pow(10, amount) * 100.0).roundToDouble() / pow(10, amount);
+    return (num * pow(10, amount) * 100.0).roundToDouble() / 100.0;
   }
 }

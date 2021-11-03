@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
-import 'package:sweep_stat_app/bluetooth/BluetoothConnectionSim.dart';
 import 'package:flutter/material.dart';
 
 class BluetoothManager {
-  static BluetoothConnectionSim sim;
   static FlutterBlue blueInstance = FlutterBlue.instance;
   static List<BluetoothDevice> deviceList = [];
   static BluetoothDevice currentDevice;
