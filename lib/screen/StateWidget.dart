@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sweep_stat_app/bluetooth/BluetoothProcessing.dart';
+import 'package:sweep_stat_app/bluetooth/SweepStatBTConnection.dart';
 import '../experiment/ExperimentSettings.dart';
 import '../experiment/Experiment.dart';
 import 'CoreState.dart';
@@ -16,7 +18,23 @@ class StateWidget extends StatefulWidget {
 }
 
 class _StateWidgetState extends State<StateWidget> {
-  CoreState state = CoreState(experiment: null, settings: null);
+  CoreState state = CoreState(experiment: null, settings: null, bluetoothProcessing: BluetoothProcessing());
+
+  ExperimentSettings getSetting() {
+    return state.settings;
+  }
+
+  Experiment getExp() {
+    return state.experiment;
+  }
+
+  SweepStatBTConnection getBT() {
+    return state.sweepStatBTConnection;
+  }
+
+  BluetoothProcessing getProcess() {
+    return state.bluetoothProcessing;
+  }
 
   void newSettings(ExperimentSettings settings) {
     final newState = state.copy(settings: settings);
@@ -30,8 +48,14 @@ class _StateWidgetState extends State<StateWidget> {
     setState(() => state = newState);
   }
 
-  void newArgument(double testNums) {
-    final newState = state.copy(testNum: testNums);
+  void newBluetoothConnection(SweepStatBTConnection sweepStatBTConnection) {
+    final newState = state.copy(sweepStatBTConnection: sweepStatBTConnection);
+
+    setState(() => state = newState);
+  }
+
+  void newBluetoothProcessing(BluetoothProcessing bluetoothProcessing) {
+    final newState = state.copy(bluetoothProcessing: bluetoothProcessing);
 
     setState(() => state = newState);
   }

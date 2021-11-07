@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'GraphChart.dart';
 import 'DataProcessing.dart';
-import 'sample.dart';
+import '../screen/StateWidget.dart';
 
 class AnalysisPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     Future<List<List>> data = DataProcessing.read();
@@ -35,7 +37,9 @@ class AnalysisPage extends StatelessWidget {
                 children: [
                   Expanded(
                       child:
-                      ElevatedButton(onPressed: () {}, child: Text("Start"))),
+                      ElevatedButton(onPressed: () {
+                        BackEnd.of(context).getProcess().startExperiment(context);
+                      }, child: Text("Start"))),
                   SizedBox(width: 25),
                   Expanded(
                       child: ElevatedButton(

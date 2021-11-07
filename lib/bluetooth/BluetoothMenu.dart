@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sweep_stat_app/bluetooth/BluetoothManager.dart';
+import 'package:flutter_blue/flutter_blue.dart';
+import 'SweepStatBTConnection.dart';
+import '../screen/StateWidget.dart';
+
+FlutterBlue flutterBlue = FlutterBlue.instance;
 
 class BluetoothMenu extends StatefulWidget {
   @override
@@ -7,60 +11,129 @@ class BluetoothMenu extends StatefulWidget {
 }
 
 class _BluetoothMenuState extends State<BluetoothMenu> {
+  @override
+  void initState() {
+    FlutterBlue.instance.startScan(timeout: Duration(seconds: 4));
+    super.initState();
+  }
 
   @override
+  void dispose() {
+    FlutterBlue.instance.stopScan();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () async {
-          await BluetoothManager.scan();
-          bool isCapable = await BluetoothManager.isCapable();
-          if (isCapable) {
-            showModalBottomSheet<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return Column(
-                  children: [
-                    const Text(
-                      "Select Your SweepStat",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      onPressed: () {
+        bluetooth(context);
+      },
+      icon: Icon(Icons.bluetooth),
+    );
+  }
+
+  Future<void> bluetooth(BuildContext context) async {
+    if (BackEnd.of(context).getExp() != null &&
+        BackEnd.of(context).getExp().isExperimentInProgress) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Experiment in progress')));
+      return;
+    } else if (BackEnd.of(context).getBT() != null) {
+      await BackEnd.of(context).getBT().endConnection();
+      BackEnd.of(context).newBluetoothConnection(null);
+    }
+
+    BluetoothDevice device = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return buildAlertDialog(context);
+        }) as BluetoothDevice;
+    if (device == null) return;
+    try {
+      await device.connect();
+      SweepStatBTConnection newCon =
+          await SweepStatBTConnection.createSweepBTConnection(device,
+              () => BackEnd.of(context).getProcess().onBTDisconnect(context));
+      BackEnd.of(context).newBluetoothConnection(newCon);
+      if (newCon == null) {
+        print('null conn');
+        return;
+      }
+      BackEnd.of(context).newBluetoothConnection(newCon);
+      BackEnd.of(context).getProcess().context = context;
+      await BackEnd.of(context)
+          .getBT()
+          .addNotifyListener(BackEnd.of(context).getProcess().acceptBTData);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('BT Error: Did you select the correct device?')));
+    }
+  }
+
+  @override
+  Widget buildAlertDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        "Bluetooth Devices",
+        style: TextStyle(fontSize: 22),
+        textAlign: TextAlign.center,
+      ),
+      content: Scaffold(
+          backgroundColor: Colors.white,
+          body: RefreshIndicator(
+            onRefresh: () =>
+                FlutterBlue.instance.startScan(timeout: Duration(seconds: 4)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Divider(),
+                  StreamBuilder<List<dynamic>>(
+                    stream: FlutterBlue.instance.scanResults,
+                    // stream: null,
+                    initialData: [],
+                    builder: (c, snapshot) => Column(
+                      children: snapshot.data.map((r) {
+                        if (r.device.name.isNotEmpty) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(
+                                r.device.name,
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () async {
+                                Navigator.pop(context, r.device);
+                              },
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }).toList(),
                     ),
-                    Expanded(
-                        child: ListView(padding: EdgeInsets.all(8), children: [
-                      for (var device in BluetoothManager.deviceList)
-                        ListTile(
-                          leading: BluetoothManager.currentDevice == device
-                              ? Icon(Icons.bluetooth_connected,
-                                  color: Colors.blue)
-                              : null,
-                          title: Text(device.id.id),
-                          trailing: IconButton(
-                            icon: BluetoothManager.currentDevice == device
-                                ? Icon(
-                                    Icons.close,
-                                    color: Colors.red,
-                                  )
-                                : Icon(null),
-                            onPressed: () {
-                              BluetoothManager.disconnect(device);
-                              Navigator.pop(context);
-                            },
-                          ),
-                          onTap: () {
-                            BluetoothManager.connect(device);
-                            Navigator.pop(context);
-                          },
-                        )
-                    ]))
-                  ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: StreamBuilder<bool>(
+            stream: FlutterBlue.instance.isScanning,
+            initialData: false,
+            builder: (c, snapshot) {
+              if (snapshot.data) {
+                return FloatingActionButton(
+                  child: Icon(Icons.stop),
+                  onPressed: () => FlutterBlue.instance.stopScan(),
+                  backgroundColor: Colors.red,
                 );
-              },
-            );
-          } else if(!isCapable) {
-            BluetoothManager.alertDeviceBluetoothIncapable(context);
-          }
-        },
-        icon:
-            BluetoothManager.currentDevice != null ? Icon(Icons.bluetooth) : Icon(Icons.bluetooth_disabled));
+              } else {
+                return FloatingActionButton(
+                    child: Icon(Icons.search),
+                    onPressed: () => FlutterBlue.instance
+                        .startScan(timeout: Duration(seconds: 4)));
+              }
+            },
+          )),
+    );
   }
 }

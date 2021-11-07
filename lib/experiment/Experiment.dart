@@ -9,6 +9,7 @@ class Experiment {
   List<FlSpot> dataL = [FlSpot(0,0)];
   List<FlSpot> dataR = [FlSpot(0,0)];
   Directory experimentDir;
+  bool isExperimentInProgress = false;
 
   Experiment(this.settings);
 
