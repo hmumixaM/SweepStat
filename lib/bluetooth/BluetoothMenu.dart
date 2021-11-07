@@ -70,7 +70,6 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
     }
   }
 
-  @override
   Widget buildAlertDialog(BuildContext context) {
     return AlertDialog(
       title: Text(

@@ -53,7 +53,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
   @override
   Widget build(BuildContext context) {
     BackEnd.of(context).getSetting() != null
-        && BackEnd.of(context).getSetting().runtimeType == 'Voltammetry'
+        && BackEnd.of(context).getSetting().runtimeType.toString() == 'Voltammetry'
         ? 'Voltammetry'
         : 'Amperometry';
     return Drawer(
