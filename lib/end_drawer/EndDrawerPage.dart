@@ -41,7 +41,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
         return false;
     } else {
       if (_fromKeyV.currentState.validate()) {
-        _settings = AmperometrySettings();
+        _settings = VoltammetrySettings();
         _fromKeyV.currentState.save();
       } else
         return false;

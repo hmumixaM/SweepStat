@@ -14,7 +14,7 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
         onPressed: () async {
           await BluetoothManager.scan();
           bool isCapable = await BluetoothManager.isCapable();
-          if (isCapable && BluetoothManager.deviceList.isNotEmpty) {
+          if (isCapable) {
             showModalBottomSheet<void>(
               context: context,
               builder: (BuildContext context) {
@@ -33,7 +33,7 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
                               ? Icon(Icons.bluetooth_connected,
                                   color: Colors.blue)
                               : null,
-                          title: Text(device.name),
+                          title: Text(device.id.id),
                           trailing: IconButton(
                             icon: BluetoothManager.currentDevice == device
                                 ? Icon(
@@ -58,8 +58,6 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
             );
           } else if(!isCapable) {
             BluetoothManager.alertDeviceBluetoothIncapable(context);
-          } else if(BluetoothManager.deviceList.isEmpty) {
-            BluetoothManager.alertNoBluetoothDevicesFound(context);
           }
         },
         icon:
