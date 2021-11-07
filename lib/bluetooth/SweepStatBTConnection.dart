@@ -22,9 +22,13 @@ class SweepStatBTConnection {
         await endConnection();
       } else {
         bluetoothDeviceState = state;
-        print(this);
+        // print(this);
       }
     });
+  }
+
+  bool isConnected() {
+    return bluetoothDeviceState == BluetoothDeviceState.connected;
   }
 
   Future<void> endConnection() async {

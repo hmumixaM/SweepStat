@@ -34,17 +34,17 @@ class _LineChartWidget extends State<LineChartWidget> {
   @override
   Widget build(BuildContext context) {
     return LineChart(LineChartData(
-        lineTouchData: LineTouchData(
-          touchCallback: (FlTouchEvent e, LineTouchResponse lineTouch) {
-            if (lineTouch != null && lineTouch.lineBarSpots != null) {
-              setState(() {
-                // print(lineTouch.original);
-                point = FlSpot(lineTouch.lineBarSpots[2].x, lineTouch.lineBarSpots[2].y);
-              });
-            }
-          },
-          handleBuiltInTouches: false,
-        ),
+        // lineTouchData: LineTouchData(
+        //   touchCallback: (FlTouchEvent e, LineTouchResponse lineTouch) {
+        //     if (lineTouch != null && lineTouch.lineBarSpots != null) {
+        //       setState(() {
+        //         // print(lineTouch.original);
+        //         point = FlSpot(lineTouch.lineBarSpots[2].x, lineTouch.lineBarSpots[2].y);
+        //       });
+        //     }
+        //   },
+        //   handleBuiltInTouches: true,
+        // ),
         lineBarsData: widget.curves
                 .map((e) => LineChartBarData(
                         spots: e,

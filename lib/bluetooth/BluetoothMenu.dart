@@ -28,7 +28,9 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
       onPressed: () {
         bluetooth(context);
       },
-      icon: Icon(Icons.bluetooth),
+      icon: Icon(BackEnd.of(context).getBT() == null
+          ? Icons.bluetooth_disabled
+          : Icons.bluetooth),
     );
   }
 
@@ -40,7 +42,9 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
       return;
     } else if (BackEnd.of(context).getBT() != null) {
       await BackEnd.of(context).getBT().endConnection();
-      BackEnd.of(context).newBluetoothConnection(null);
+      setState(() {
+        BackEnd.of(context).clearBluetoothConnection();
+      });
     }
 
     BluetoothDevice device = await showDialog(
@@ -54,12 +58,16 @@ class _BluetoothMenuState extends State<BluetoothMenu> {
       SweepStatBTConnection newCon =
           await SweepStatBTConnection.createSweepBTConnection(device,
               () => BackEnd.of(context).getProcess().onBTDisconnect(context));
-      BackEnd.of(context).newBluetoothConnection(newCon);
+      setState(() {
+        BackEnd.of(context).newBluetoothConnection(newCon);
+      });
       if (newCon == null) {
         print('null conn');
         return;
       }
-      BackEnd.of(context).newBluetoothConnection(newCon);
+      setState(() {
+        BackEnd.of(context).newBluetoothConnection(newCon);
+      });
       BackEnd.of(context).getProcess().context = context;
       await BackEnd.of(context)
           .getBT()

@@ -18,7 +18,11 @@ class StateWidget extends StatefulWidget {
 }
 
 class _StateWidgetState extends State<StateWidget> {
-  CoreState state = CoreState(experiment: null, settings: null, bluetoothProcessing: BluetoothProcessing());
+  CoreState state = CoreState(
+      experiment: null,
+      settings: null,
+      sweepStatBTConnection: null,
+      bluetoothProcessing: BluetoothProcessing());
 
   ExperimentSettings getSetting() {
     return state.settings;
@@ -54,6 +58,16 @@ class _StateWidgetState extends State<StateWidget> {
     setState(() => state = newState);
   }
 
+  void clearBluetoothConnection() {
+    final newState = CoreState(
+        settings: state.settings,
+        experiment: state.experiment,
+        sweepStatBTConnection: null,
+        bluetoothProcessing: state.bluetoothProcessing);
+
+    setState(() => state = newState);
+  }
+
   void newBluetoothProcessing(BluetoothProcessing bluetoothProcessing) {
     final newState = state.copy(bluetoothProcessing: bluetoothProcessing);
 
@@ -62,10 +76,10 @@ class _StateWidgetState extends State<StateWidget> {
 
   @override
   Widget build(BuildContext context) => BackEnd(
-    child: widget.child,
-    state: state,
-    stateWidget: this,
-  );
+        child: widget.child,
+        state: state,
+        stateWidget: this,
+      );
 }
 
 class BackEnd extends InheritedWidget {
@@ -79,11 +93,9 @@ class BackEnd extends InheritedWidget {
     @required this.stateWidget,
   }) : super(key: key, child: child);
 
-  static _StateWidgetState of(BuildContext context) => context
-      .dependOnInheritedWidgetOfExactType<BackEnd>()
-      .stateWidget;
+  static _StateWidgetState of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<BackEnd>().stateWidget;
 
   @override
-  bool updateShouldNotify(BackEnd oldWidget) =>
-      oldWidget.state != state;
+  bool updateShouldNotify(BackEnd oldWidget) => oldWidget.state != state;
 }

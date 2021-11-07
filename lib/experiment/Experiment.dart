@@ -10,8 +10,29 @@ class Experiment {
   List<FlSpot> dataR = [FlSpot(0,0)];
   Directory experimentDir;
   bool isExperimentInProgress = false;
+  List<Function> listener = [];
 
   Experiment(this.settings);
+
+  void addL(FlSpot a) {
+    dataL.add(a);
+    notifyListener();
+  }
+
+  void addR(FlSpot a) {
+    dataR.add(a);
+    notifyListener();
+  }
+
+  void addListener(Function update) {
+    listener.add(update);
+  }
+
+  void notifyListener() {
+    for (Function listen in listener) {
+      listen(this);
+    }
+  }
 
   Future<Directory> getOrCreateCurrentDirectory() async {
     if (experimentDir == null) {
