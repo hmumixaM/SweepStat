@@ -83,9 +83,6 @@ class _ConfigureItem extends State<ConfigureItem> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => EndDrawerPage(
-                      initialV: ConfigList[0].initialV,
-                      vertexV: ConfigList[0].vertexV,
-                      finalV: ConfigList[0].finalV,
                     ),
                   ),
                 )

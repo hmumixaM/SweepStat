@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'GraphChart.dart';
 import 'DataProcessing.dart';
 import 'sample.dart';
+import 'package:sweep_stat_app/file_management/file_manager.dart';
 
 class AnalysisPage extends StatelessWidget {
   @override
@@ -12,7 +14,7 @@ class AnalysisPage extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 630,
+              height: 420,
               width: 420,
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -43,7 +45,7 @@ class AnalysisPage extends StatelessWidget {
                   SizedBox(width: 25),
                   Expanded(
                       child:
-                      ElevatedButton(onPressed: () {
+                      ElevatedButton(onPressed: () async {
                         buildAlertDialog(context).then((fileName) {
                             print(fileName);
                         });
