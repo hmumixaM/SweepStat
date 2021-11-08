@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../analysis/LineChartWidget.dart';
@@ -41,7 +40,7 @@ class _AnalysisPage extends State<AnalysisPage> {
         child: Column(
           children: [
             Container(
-              height: 630,
+              height: 420,
               width: 420,
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -74,7 +73,7 @@ class _AnalysisPage extends State<AnalysisPage> {
                   SizedBox(width: 25),
                   Expanded(
                       child:
-                      ElevatedButton(onPressed: () {
+                      ElevatedButton(onPressed: () async {
                         buildAlertDialog(context).then((fileName) {
                             print(fileName);
                         });
