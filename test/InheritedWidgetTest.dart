@@ -15,10 +15,10 @@ void main() {
       },
     );
 
-    final BackEnd first = BackEnd(child: builder);
-    await tester.pumpWidget(first);
-
-    expect(log, equals(<BackEnd>[first]));
+    // final BackEnd first = BackEnd(child: builder);
+    // await tester.pumpWidget(first);
+    //
+    // expect(log, equals(<BackEnd>[first]));
   });
 
 

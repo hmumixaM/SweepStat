@@ -78,14 +78,17 @@ class _ConfigureItem extends State<ConfigureItem> {
                     style: TextStyle(height: 1.5)),
               ),
               onTap: () => {
-                _onSelected(1),
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EndDrawerPage(
-                    ),
-                  ),
-                )
+                // _onSelected(1),
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => EndDrawerPage(
+                //       initialV: ConfigList[0].initialV,
+                //       vertexV: ConfigList[0].vertexV,
+                //       finalV: ConfigList[0].finalV,
+                //     ),
+                //   ),
+                // )
               },
             )),
         Container(

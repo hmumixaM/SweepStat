@@ -1,32 +1,32 @@
-import 'package:flutter/cupertino.dart';
+import 'package:sweep_stat_app/bluetooth/BluetoothProcessing.dart';
+import 'package:sweep_stat_app/bluetooth/SweepStatBTConnection.dart';
 import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
 import 'package:sweep_stat_app/experiment/Experiment.dart';
-
 
 class CoreState {
   final ExperimentSettings settings;
   final Experiment experiment;
-  final String testString;
-  final double testNum;
+  final SweepStatBTConnection sweepStatBTConnection;
+  final BluetoothProcessing bluetoothProcessing;
 
   const CoreState({
     this.settings,
     this.experiment,
-    this.testString = "hello world",
-    this.testNum = 0.5,
+    this.sweepStatBTConnection,
+    this.bluetoothProcessing,
   });
 
   CoreState copy({
     ExperimentSettings settings,
     Experiment experiment,
-    String testString,
-    double testNum,
+    SweepStatBTConnection sweepStatBTConnection,
+    BluetoothProcessing bluetoothProcessing,
   }) =>
       CoreState(
         settings: settings ?? this.settings,
         experiment: experiment ?? this.experiment,
-        testString: testString ?? this.testString,
-        testNum: testNum ?? this.testNum,
+        sweepStatBTConnection: sweepStatBTConnection ?? this.sweepStatBTConnection,
+        bluetoothProcessing: bluetoothProcessing ?? this.bluetoothProcessing,
       );
 
   @override
@@ -36,9 +36,9 @@ class CoreState {
               runtimeType == other.runtimeType &&
               settings == other.settings &&
               experiment == other.experiment &&
-              testNum == other.testNum &&
-              testString == other.testString;
+              sweepStatBTConnection == other.sweepStatBTConnection &&
+              bluetoothProcessing == other.bluetoothProcessing;
 
   @override
-  int get hashCode => settings.hashCode ^ experiment.hashCode ^ testNum.hashCode ^ testString.hashCode;
+  int get hashCode => settings.hashCode ^ experiment.hashCode ^ sweepStatBTConnection.hashCode ^ bluetoothProcessing.hashCode;
 }

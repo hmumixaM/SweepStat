@@ -1,12 +1,38 @@
+import 'dart:async';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-
+import '../analysis/LineChartWidget.dart';
+import '../experiment/Experiment.dart';
 import 'GraphChart.dart';
 import 'DataProcessing.dart';
-import 'sample.dart';
-import 'package:sweep_stat_app/file_management/file_manager.dart';
+import '../screen/StateWidget.dart';
 
-class AnalysisPage extends StatelessWidget {
+class AnalysisPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _AnalysisPage();
+  }
+}
+
+class _AnalysisPage extends State<AnalysisPage> {
+
+  List<List<FlSpot>> _curves;
+
+  @override
+  void initState() {
+    _curves = [[FlSpot(0,0)], [FlSpot(0,0)]];
+    super.initState();
+  }
+
+  void updateGraph(Experiment experiment) {
+    if (mounted) {
+      setState(() {
+        _curves[0] = experiment.dataL;
+        _curves[1] = experiment.dataR;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<List<List>> data = DataProcessing.read();
@@ -22,7 +48,7 @@ class AnalysisPage extends StatelessWidget {
                   left: 15,
                   right: 15,
                 ),
-                child: GraphChart(data),
+                child: LineChartWidget(_curves),
                 // child: LineChartSample1(),
               ),
             ),
@@ -37,7 +63,9 @@ class AnalysisPage extends StatelessWidget {
                 children: [
                   Expanded(
                       child:
-                      ElevatedButton(onPressed: () {}, child: Text("Start"))),
+                      ElevatedButton(onPressed: () {
+                        BackEnd.of(context).getProcess().startExperiment(context, updateGraph);
+                      }, child: Text("Start"))),
                   SizedBox(width: 25),
                   Expanded(
                       child: ElevatedButton(

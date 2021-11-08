@@ -20,7 +20,7 @@ class EndDrawerPage extends StatefulWidget {
 }
 
 class _EndDrawerpage extends State<EndDrawerPage> {
-  String _mode = "Amperometry";
+  String _mode = 'Voltammetry';
   final _fromKeyA = GlobalKey<FormState>();
   final _fromKeyV = GlobalKey<FormState>();
   ExperimentSettings _settings;
@@ -41,7 +41,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
         return false;
     } else {
       if (_fromKeyV.currentState.validate()) {
-        _settings = AmperometrySettings();
+        _settings = VoltammetrySettings();
         _fromKeyV.currentState.save();
       } else
         return false;
@@ -52,6 +52,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
 
   @override
   Widget build(BuildContext context) {
+    BackEnd.of(context).getSetting() != null
+        && BackEnd.of(context).getSetting().runtimeType.toString() == 'Amperometry'
+        ? 'Amperometry'
+        : 'Voltammetry';
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,

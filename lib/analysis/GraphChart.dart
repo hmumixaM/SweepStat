@@ -5,7 +5,7 @@ import 'DataProcessing.dart';
 import 'LineChartWidget.dart';
 
 class GraphChart extends StatefulWidget {
-  Future<List<List>> data;
+  final Future<List<List>> data;
 
   GraphChart(this.data);
 
