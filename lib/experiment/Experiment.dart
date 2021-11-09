@@ -118,7 +118,7 @@ class Experiment {
       v.vertexVoltage = double.parse(lines[5].split(' = ').last);
       v.finalVoltage = double.parse(lines[6].split(' = ').last);
       v.scanRate = double.parse(lines[7].split(' = ').last);
-      v.sweepSegments = double.parse(lines[8].split(' = ').last);
+      v.sweepSegments = int.parse(lines[8].split(' = ').last);
       v.sampleInterval = double.parse(lines[9].split(' = ').last);
       e = new Experiment(v);
       startLine = 12;

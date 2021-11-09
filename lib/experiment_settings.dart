@@ -172,7 +172,4 @@ class VoltammetrySettings extends ExperimentSettings{
     gainSetting = GainExtension.stringToEnum(fileInfo[6]);
     electrode = Electrode.values.firstWhere((val)=> val.toString().split('.').last == fileInfo[7]);
   }
-
-
-
 }
