@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/file_management/file_manager.dart';
 import 'ConfigureItem.dart';
-import 'SettingItem.dart';
-import 'ConfigureFileTab.dart';
 import 'SettingItem.dart';
 
 class DrawerPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Drawer(
       child: ListView(padding: EdgeInsets.zero, children: [
         Container(
@@ -24,5 +24,12 @@ class DrawerPage extends StatelessWidget {
         SettingItem(),
       ]),
     );
+  }
+
+  static Future<List> generateMenuList(EntryType type) async{
+    Database db = await DBManager.startDBConnection();
+    List query = await DBManager.queryEntireTable(db, type);
+    DBManager.closeDBConnection(db);
+    return query;
   }
 }

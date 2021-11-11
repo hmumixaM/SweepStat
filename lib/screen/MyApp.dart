@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/file_management/file_manager.dart';
 import '../bluetooth/BluetoothMenu.dart';
 import 'package:sweep_stat_app/analysis/AnalysisPage.dart';
 import '../drawer/DrawerPage.dart';
@@ -34,7 +36,11 @@ class MyHomePage extends StatelessWidget {
           automaticallyImplyLeading: false,
           leading: Builder(
             builder: (context) => IconButton(
-                onPressed: () => Scaffold.of(context).openDrawer(),
+                onPressed: () async{
+                  Database db = await DBManager.startDBConnection();
+                  List configs = await DBManager.queryEntireTable(db, EntryType.config);
+                  Scaffold.of(context).openDrawer();
+                  },
                 icon: Icon(Icons.menu)),
           ),
           actions: <Widget>[
