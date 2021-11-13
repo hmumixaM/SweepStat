@@ -41,14 +41,18 @@ class _ConfigureItem extends State<ConfigureItem> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       builder: (context, snapshot) {
-        return ExpansionTile(
-          initiallyExpanded: true,
-          title: Text(
-            'Configurations',
-            textScaleFactor: 1.25,
-          ),
-          children: dbQueryToWidgets(snapshot.data),
-        );
+        if(!snapshot.hasData){
+          return CircularProgressIndicator();
+        } else {
+          return ExpansionTile(
+            initiallyExpanded: true,
+            title: Text(
+              'Configurations',
+              textScaleFactor: 1.25,
+            ),
+            children: dbQueryToWidgets(snapshot.data, true),
+          );
+        }
       },
       future: DrawerPage.generateMenuList(EntryType.config),
     );
@@ -176,12 +180,17 @@ class _ConfigureItem extends State<ConfigureItem> {
     );*/
   }
 
-  List<Widget> dbQueryToWidgets(List<Map> query){
+  List<Widget> dbQueryToWidgets(List<Map> query, bool limit){
     List<Widget> output = [];
-    for(Map entry in query){
-      output.add(ConfigListItem(entry));
+
+    if(query.length > 2 && limit){
+      output.add(ConfigListItem(query[0]));
+      output.add(ConfigListItem(query[1]));
+    } else {
+      for(Map entry in query){
+        output.add(ConfigListItem(entry));
+      }
     }
-    print(output);
     return output;
   }
 
