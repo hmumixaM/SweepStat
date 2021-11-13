@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/file_management/file_manager.dart';
 import 'ValueInput.dart';
 import 'DropDownInput.dart';
 import '../screen/StateWidget.dart';
@@ -93,11 +95,14 @@ class _EndDrawerpage extends State<EndDrawerPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 if (saveSettings())
-                  buildAlertDialog(context).then((fileName) {
-                    _settings.writeToFile(fileName, "settings");
-                    print(fileName);
+                  buildAlertDialog(context).then((fileName) async{
+                    Database db = await DBManager.startDBConnection();
+                    await DBManager.addObject(db, EntryType.config, _settings.toDBMap(fileName));
+                    var test = await DBManager.queryExpectOneResult(db, EntryType.config, fileName);
+                    print(test);
+                    DBManager.closeDBConnection(db);
                   });
               },
               child: const Text('Save'),
@@ -266,8 +271,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               voltValid),
           ValueInput(
               'Sweep Segments',
-              (double d) =>
-                  {(_settings as VoltammetrySettings).sweepSegments = d},
+              (int i) =>
+                  {(_settings as VoltammetrySettings).sweepSegments = i},
               BackEnd.of(context).state.settings != null &&
                       BackEnd.of(context).state.settings.runtimeType ==
                           VoltammetrySettings

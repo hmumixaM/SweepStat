@@ -43,6 +43,16 @@ abstract class ExperimentSettings {
     }
     return false;
   }
+
+  Map<String, dynamic> toDBMap(String title){
+    return {
+      "title": title,
+      "initialVoltage": initialVoltage,
+      "sampleInterval": sampleInterval,
+      "gainSetting": gainSetting.describeEnum(),
+      "electrode": electrode.describeEnum(),
+    };
+  }
 }
 
 class AmperometrySettings extends ExperimentSettings {
@@ -87,11 +97,20 @@ class AmperometrySettings extends ExperimentSettings {
     electrode = Electrode.values
         .firstWhere((val) => val.toString().split('.').last == fileInfo[4]);
   }
+
+  @override
+  Map<String, dynamic> toDBMap(String title) {
+    Map returnable = super.toDBMap(title);
+    returnable["type"] = "Amperometry";
+    returnable["runtime"] == runtime;
+    return returnable;
+  }
 }
 
 // A class for holding experiment settings variables
 class VoltammetrySettings extends ExperimentSettings {
-  double vertexVoltage, finalVoltage, scanRate, sweepSegments;
+  double vertexVoltage, finalVoltage, scanRate;
+  int sweepSegments;
 
   VoltammetrySettings(
       {initialVoltage,
@@ -146,11 +165,23 @@ class VoltammetrySettings extends ExperimentSettings {
     vertexVoltage = double.parse(fileInfo[1]);
     finalVoltage = double.parse(fileInfo[2]);
     scanRate = double.parse(fileInfo[3]);
-    sweepSegments = double.parse(fileInfo[4]);
+    sweepSegments = int.parse(fileInfo[4]);
     sampleInterval = double.parse(fileInfo[5]);
     gainSetting = GainExtension.stringToEnum(fileInfo[6]);
     electrode = Electrode.values
         .firstWhere((val) => val.toString().split('.').last == fileInfo[7]);
+  }
+
+  @override
+  Map<String, dynamic> toDBMap(String title) {
+    Map returnable = super.toDBMap(title);
+    returnable["type"] = "CV";
+    returnable["vertexVoltage"] = vertexVoltage;
+    returnable["finalVoltage"] = finalVoltage;
+    returnable["scanRate"] = scanRate;
+    returnable["sweepSegments"] = sweepSegments;
+
+    return returnable;
   }
 }
 
@@ -183,6 +214,36 @@ extension GainExtension on GainSettings {
 }
 
 enum Electrode { pseudoref, silver, calomel, hydrogen }
+
+extension ElectrodeExtension on Electrode {
+  String describeEnum() {
+    switch (this) {
+      case Electrode.calomel:
+        return "calomel";
+      case Electrode.hydrogen:
+        return "hydrogen";
+      case Electrode.pseudoref:
+        return "pseudoref";
+      case Electrode.silver:
+        return "silver";
+    }
+    return null;
+  }
+
+  static Electrode stringToEnum(String s) {
+    switch (s) {
+      case "calomel":
+        return Electrode.calomel;
+      case "hydrogen":
+        return Electrode.hydrogen;
+      case "pseudoref":
+        return Electrode.pseudoref;
+      case "silver":
+        return Electrode.silver;
+    }
+    return null;
+  }
+}
 
 String variablesToBTString(List<double> variables) {
   String returnString = "";
