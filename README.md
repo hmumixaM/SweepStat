@@ -36,8 +36,9 @@ Flutter: https://flutter.dev/
 
 SweepStat potentiostat: https://www.nanoelectrochemistry.com/sweepstat
 
-
 Android and iOS devices
+
+
 ADRs can be found at: https://www.notion.so/uncch/Architecture-d3b9575eb00a4b078d073ec58aa73ecc#660cdc91261b4f8085bd534054108616
 
 # Contributing
