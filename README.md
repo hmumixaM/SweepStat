@@ -56,15 +56,12 @@ https://uncch.notion.site/uncch/SweepStat-d0259ba917ad4c7a8bc5e508f663ac7d
 # Authors
 
 Yang Hu: yanghu@live.unc.edu
-
          https://github.com/hmumixaM
          
 Matt Wasyluk: mwasyluk@unc.edu
-
               https://github.com/m-wasyluk
               
 Yumeng Zhang: rainymz@live.unc.edu
-
               https://github.com/rainymz
 
 # License
