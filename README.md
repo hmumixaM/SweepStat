@@ -20,14 +20,23 @@ Testing our app is ridiculously simple. Just run "flutter test" in the app root 
 Flutter libraries used
 
 share: https://pub.dev/packages/share
+
 path_provider: https://pub.dev/packages/path_provider
+
 fl_chart: https://pub.dev/packages/fl_chart
+
 flutter_blue: https://pub.dev/packages/flutter_blue
+
+
 Development tools used
 
 IntelliJ IDEA: https://www.jetbrains.com/idea/
+
 Flutter: https://flutter.dev/
+
 SweepStat potentiostat: https://www.nanoelectrochemistry.com/sweepstat
+
+
 Android and iOS devices
 ADRs can be found at: https://www.notion.so/uncch/Architecture-d3b9575eb00a4b078d073ec58aa73ecc#660cdc91261b4f8085bd534054108616
 
@@ -47,8 +56,10 @@ https://uncch.notion.site/uncch/SweepStat-d0259ba917ad4c7a8bc5e508f663ac7d
 
 Yang Hu: yanghu@live.unc.edu
          https://github.com/hmumixaM
+         
 Matt Wasyluk: mwasyluk@unc.edu
               https://github.com/m-wasyluk
+              
 Yumeng Zhang: rainymz@live.unc.edu
               https://github.com/rainymz
 
