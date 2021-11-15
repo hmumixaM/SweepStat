@@ -99,9 +99,9 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                 if (saveSettings())
                   buildAlertDialog(context).then((fileName) async{
                     Database db = await DBManager.startDBConnection();
-                    await DBManager.addObject(db, EntryType.config, _settings.toDBMap(fileName));
-                    var test = await DBManager.queryExpectOneResult(db, EntryType.config, fileName);
-                    print(test);
+                    await DBManager.addObject(db, EntryType.config, BackEnd.of(context).getSetting().toDBMap(fileName));
+                    var query = await DBManager.queryEntireTable(db, EntryType.config);
+                    print(query);
                     DBManager.closeDBConnection(db);
                   });
               },
@@ -271,8 +271,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               voltValid),
           ValueInput(
               'Sweep Segments',
-              (int i) =>
-                  {(_settings as VoltammetrySettings).sweepSegments = i},
+              (double d) =>
+                  {(_settings as VoltammetrySettings).sweepSegments = d.floor()},
               BackEnd.of(context).state.settings != null &&
                       BackEnd.of(context).state.settings.runtimeType ==
                           VoltammetrySettings

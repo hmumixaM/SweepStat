@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/file_management/file_manager.dart';
 import '../analysis/LineChartWidget.dart';
 import '../experiment/Experiment.dart';
 import 'GraphChart.dart';
@@ -107,7 +109,12 @@ class _AnalysisPage extends State<AnalysisPage> {
                 MaterialButton(
                   elevation: 0.5,
                   child: Text("Save"),
-                  onPressed: () {
+                  onPressed: () async {
+                    Database db = await DBManager.startDBConnection();
+                    //todo: store experiment in database
+                    print(BackEnd.of(context).getExp().dataToString());
+                    DBManager.closeDBConnection(db);
+
                     Navigator.of(context).pop(controller.text.toString());
                   },
                 )

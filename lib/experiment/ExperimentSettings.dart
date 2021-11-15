@@ -53,6 +53,45 @@ abstract class ExperimentSettings {
       "electrode": electrode.describeEnum(),
     };
   }
+
+  static ExperimentSettings fromDBMap(Map<String, dynamic> dbMap){
+    ExperimentSettings result;
+
+    if(dbMap["type"] == "Voltammetry"){
+      result = VoltammetrySettings(
+        initialVoltage: dbMap["initialVoltage"],
+        vertexVoltage: dbMap["vertexVoltage"],
+        finalVoltage: dbMap["finalVoltage"],
+        sampleInterval: dbMap["sampleInterval"],
+        scanRate: dbMap["scanRate"],
+        sweepSegments: dbMap["sweepSegments"],
+        gainSetting: GainExtension.stringToEnum(dbMap["gainSetting"]),
+        electrode: ElectrodeExtension.stringToEnum(dbMap["electrode"]),
+      );
+    } else if(dbMap["type"] == "Amperometry"){
+      result = AmperometrySettings(
+        initialVoltage: dbMap["initialVoltage"],
+        sampleInterval: dbMap["sampleInterval"],
+        runtime: dbMap["runtime"],
+        gainSetting: GainExtension.stringToEnum(dbMap["gainSetting"]),
+        electrode: ElectrodeExtension.stringToEnum(dbMap["electrode"]),
+      );
+    }
+
+    return result;
+  }
+
+  bool hasSameParameters(ExperimentSettings other){
+    bool result = true;
+    if(this.initialVoltage != other.initialVoltage
+    || this.electrode != other.electrode
+    || this.gainSetting != other.gainSetting
+    || this.sampleInterval != other.sampleInterval){
+      result = false;
+    }
+
+    return result;
+  }
 }
 
 class AmperometrySettings extends ExperimentSettings {
@@ -102,8 +141,23 @@ class AmperometrySettings extends ExperimentSettings {
   Map<String, dynamic> toDBMap(String title) {
     Map returnable = super.toDBMap(title);
     returnable["type"] = "Amperometry";
-    returnable["runtime"] == runtime;
+    returnable["runtime"] = runtime;
     return returnable;
+  }
+
+  @override
+  bool hasSameParameters(ExperimentSettings other){
+    bool result  = super.hasSameParameters(other);
+
+    if(!(other is AmperometrySettings)){
+      result = false;
+    }
+
+    if(!result || this.runtime != (other as AmperometrySettings).runtime){
+      result = false;
+    }
+
+    return result;
   }
 }
 
@@ -182,6 +236,26 @@ class VoltammetrySettings extends ExperimentSettings {
     returnable["sweepSegments"] = sweepSegments;
 
     return returnable;
+  }
+
+  @override
+  bool hasSameParameters(ExperimentSettings other) {
+    bool result = super.hasSameParameters(other);
+
+    if (other is VoltammetrySettings) {
+      VoltammetrySettings otherVoltammetry = other as VoltammetrySettings;
+
+      if (this.sweepSegments != other.sweepSegments
+          || this.scanRate != other.scanRate
+          || this.vertexVoltage != other.vertexVoltage
+          || this.finalVoltage != other.finalVoltage) {
+        result = false;
+      }
+    } else {
+      result = false;
+    }
+
+    return result;
   }
 }
 
