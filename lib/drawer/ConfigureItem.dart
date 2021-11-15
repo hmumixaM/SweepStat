@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sweep_stat_app/file_management/file_manager.dart';
-import 'ConfigureFileTab.dart';
+import 'package:sweep_stat_app/screen/StateWidget.dart';
+import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
 import 'DrawerPage.dart';
 
 class Config {
@@ -31,10 +32,8 @@ class _ConfigureItem extends State<ConfigureItem> {
   List ConfigList;*/
   List<Map> dbFormattedConfigList;
 
-  int _selectedIndex = -1;
-
-  _onSelected(int index) {
-    setState(() => _selectedIndex = index);
+  _onSelected(ExperimentSettings settings) {
+    BackEnd.of(context).newSettings(settings);
   }
 
   @override
@@ -183,9 +182,10 @@ class _ConfigureItem extends State<ConfigureItem> {
   List<Widget> dbQueryToWidgets(List<Map> query, bool limit){
     List<Widget> output = [];
 
-    if(query.length > 2 && limit){
+    if(query.length > 3 && limit){
       output.add(ConfigListItem(query[0]));
       output.add(ConfigListItem(query[1]));
+      output.add(ConfigListItem(query[2]));
     } else {
       for(Map entry in query){
         output.add(ConfigListItem(entry));
@@ -195,8 +195,13 @@ class _ConfigureItem extends State<ConfigureItem> {
   }
 
   Widget ConfigListItem(Map<String, dynamic> entry) {
+    ExperimentSettings currentConfig = BackEnd.of(context).getSetting();
+    var loadedConfig = ExperimentSettings.fromDBMap(entry);
+    print(identical(currentConfig, loadedConfig));
+    print(currentConfig);
+    print(loadedConfig);
     return Container(
-        color: _selectedIndex != null && _selectedIndex == 1
+        color: currentConfig != null && currentConfig.hasSameParameters(loadedConfig)
             ? Color.fromRGBO(75, 156, 211, 0.8).withOpacity(0.5)
             : Colors.transparent,
         child: ListTile(
@@ -207,18 +212,29 @@ class _ConfigureItem extends State<ConfigureItem> {
           subtitle: Padding(
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
             child: Text(
-                //dynamic content needed
-                "Initial Voltage: " +
-                    entry["initialVoltage"].toString() +
-                    ", " +
-                    "Vertex Voltage: " +
-                    entry["vertexVoltage"].toString() +
-                    ", " +
-                    "Final Voltage: " +
-                    entry["finalVoltage"].toString(),
+                entry["type"] == "Voltammetry" ?
+                  "Initial Voltage: " +
+                  entry["initialVoltage"].toString() +
+                  ", " +
+                  "Vertex Voltage: " +
+                  entry["vertexVoltage"].toString() +
+                  ", " +
+                  "Final Voltage: " +
+                  entry["finalVoltage"].toString() ://split here
+                  "Initial Voltage: " +
+                  entry["initialVoltage"].toString() +
+                  ", " +
+                  "Sample Interval: " +
+                  entry["sampleInterval"].toString() +
+                  ", " +
+                  "Run Time: " +
+                  entry["runtime"].toString(),
                 style: TextStyle(height: 1.5)),
           ),
-          onTap: () => {},
+          onTap: () {
+            _onSelected(ExperimentSettings.fromDBMap(entry));
+            Navigator.pop(context);
+          },
         ));
   }
 }
