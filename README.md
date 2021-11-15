@@ -57,7 +57,7 @@ For code style, we mainly follow the official coding style provided by Google.
 For more information, see our project site for the Fall 2021 semester:
 https://uncch.notion.site/uncch/SweepStat-d0259ba917ad4c7a8bc5e508f663ac7d
 
-# Authors
+# Contributors
 
 Yang Hu: yanghu@live.unc.edu
          https://github.com/hmumixaM
@@ -69,7 +69,7 @@ Yumeng Zhang: rainymz@live.unc.edu
               https://github.com/rainymz
 
 # License
-
+License to be determined.
 
 # Acknowledgements
 We first need to thank our clients, Rebecca Clark and Matthew Verber of the SweepStat team for giving us the opportunity to work with them. We appreciate that they have kept their trust in us during the process of completing the project, taking the time to check our progress every week and giving us reasonable feedback. Always patient and positive replies when we have questions. For each of us, the experience of completing the SweepStat project has been unforgettable and rewarding.
