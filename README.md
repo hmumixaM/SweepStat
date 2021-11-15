@@ -27,6 +27,8 @@ fl_chart: https://pub.dev/packages/fl_chart
 
 flutter_blue: https://pub.dev/packages/flutter_blue
 
+sqflite: https://pub.dev/packages/sqflite
+
 
 Development tools used
 
