@@ -9,7 +9,7 @@ To build/debug our code, a simple git clone followed by "flutter pub get" in the
 
 It is worth noting that for web or an emulator, the Bluetooth will not be functional and the local database storage may not be functional or need to be swapped to a supported location in file_manager.dart. For Android emulators, this means switching getDatabasesPath() to getExternalStorageDirectory().path. These instructions work as of 4pm on 11/14/2021 on a Windows 10 laptop running a Pixel 6 emulator in Android Studio.
 
-### Installing
+## Installing
 
 To install the project and its dependencies:
 
@@ -30,29 +30,18 @@ Instructions for producing a release build and deploying to the App Store can be
 
 # Technologies Used
 Flutter libraries used
-
-share: https://pub.dev/packages/share
-
-path_provider: https://pub.dev/packages/path_provider
-
-fl_chart: https://pub.dev/packages/fl_chart
-
-flutter_blue: https://pub.dev/packages/flutter_blue
-
-sqflite: https://pub.dev/packages/sqflite
-
+* share: https://pub.dev/packages/share
+* path_provider: https://pub.dev/packages/path_provider
+* fl_chart: https://pub.dev/packages/fl_chart
+* flutter_blue: https://pub.dev/packages/flutter_blue
+* sqflite: https://pub.dev/packages/sqflite
 
 Development tools used
-
-IntelliJ IDEA: https://www.jetbrains.com/idea/
-
-Intellij IDEA Flutter Plugin: https://plugins.jetbrains.com/plugin/9212-flutter
-
-Dart SDK: https://www.jetbrains.com/help/idea/dart.html
-
-Flutter: https://flutter.dev/
-
-SweepStat potentiostat: https://www.nanoelectrochemistry.com/sweepstat
+* IntelliJ IDEA: https://www.jetbrains.com/idea/
+* Intellij IDEA Flutter Plugin: https://plugins.jetbrains.com/plugin/9212-flutter
+* Dart SDK: https://www.jetbrains.com/help/idea/dart.html
+* Flutter: https://flutter.dev/
+* SweepStat potentiostat: https://www.nanoelectrochemistry.com/sweepstat
 
 ADRs can be found at: https://www.notion.so/uncch/Architecture-d3b9575eb00a4b078d073ec58aa73ecc#660cdc91261b4f8085bd534054108616
 
