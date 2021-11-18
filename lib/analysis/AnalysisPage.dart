@@ -5,25 +5,25 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sweep_stat_app/file_management/file_manager.dart';
 import '../analysis/LineChartWidget.dart';
 import '../experiment/Experiment.dart';
-import 'GraphChart.dart';
 import 'DataProcessing.dart';
 import '../screen/StateWidget.dart';
 
 class AnalysisPage extends StatefulWidget {
-  const AnalysisPage({this.buttonKey});
+  const AnalysisPage({this.startKey, this.saveKey, this.shareKey});
 
-  final Key buttonKey;
+  final Key startKey, saveKey, shareKey;
 
   @override
   State<StatefulWidget> createState() {
-    return _AnalysisPage(buttonKey: buttonKey);
+    return _AnalysisPage(
+        startKey: startKey, saveKey: saveKey, shareKey: shareKey);
   }
 }
 
 class _AnalysisPage extends State<AnalysisPage> {
-  _AnalysisPage({this.buttonKey});
+  _AnalysisPage({this.startKey, this.saveKey, this.shareKey});
 
-  final Key buttonKey;
+  final Key startKey, saveKey, shareKey;
   List<List<FlSpot>> _curves;
 
   @override
@@ -49,8 +49,8 @@ class _AnalysisPage extends State<AnalysisPage> {
     Future<List<List>> data = DataProcessing.read();
     return SafeArea(
         child: Column(
-      children: [
-        Container(
+          children: [
+          Container(
           height: 420,
           width: 420,
           child: Padding(
@@ -64,39 +64,41 @@ class _AnalysisPage extends State<AnalysisPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 35,
-            bottom: 35,
-            left: 35,
-            right: 35,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                  child: ElevatedButton(
-                      key: buttonKey,
-                      onPressed: () {
-                        BackEnd.of(context)
-                            .getProcess()
-                            .startExperiment(context, updateGraph);
-                      },
-                      child: Text("Start"))),
-              SizedBox(width: 25),
-              Expanded(
-                  child: ElevatedButton(onPressed: () {}, child: Text("Stop"))),
-              SizedBox(width: 25),
-              Expanded(
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        buildAlertDialog(context).then((fileName) {
-                          print(fileName);
-                        });
-                      },
-                      child: Text("Export"))),
-            ],
-          ),
-        )
-      ],
+            padding: const EdgeInsets.only(
+              top: 35,
+              bottom: 35,
+              left: 35,
+              right: 35,
+            ),
+            child: Row(
+                children: [
+            Expanded(
+            child: ElevatedButton(
+            key: startKey,
+                onPressed: () {
+                  BackEnd.of(context)
+                      .getProcess()
+                      .startExperiment(context, updateGraph);
+                },
+                child: Text("Start"))),
+        SizedBox(width: 25),
+        Expanded(
+            child: ElevatedButton(
+                key: saveKey, onPressed: () {}, child: Text("Save"))),
+        SizedBox(width: 25),
+        Expanded(
+            child: ElevatedButton(
+                key: shareKey,
+                onPressed: () async {
+        buildAlertDialog(context).then((fileName) {
+        print(fileName);
+        });
+        },
+            child: Text("Share"))),
+    ],
+    ),
+    )
+    ],
     ));
   }
 

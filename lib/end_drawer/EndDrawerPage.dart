@@ -153,10 +153,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Initial Voltage (V)',
               (double d) =>
                   {(_settings as AmperometrySettings).initialVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? BackEnd.of(context).state.settings.initialVoltage.toString()
+                  ? BackEnd.of(context).getSetting().initialVoltage.toString()
                   : '',
               voltValid,
               'The voltage that SweepStat started with.'),
@@ -164,19 +164,19 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Sample Interval (V)',
               (double d) =>
                   {(_settings as AmperometrySettings).sampleInterval = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? BackEnd.of(context).state.settings.sampleInterval.toString()
+                  ? BackEnd.of(context).getSetting().sampleInterval.toString()
                   : '',
               voltValid, 'The step of voltage when voltage changes.'),
           ValueInput(
               'Run time (S)',
               (double d) => {(_settings as AmperometrySettings).runtime = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? (BackEnd.of(context).state.settings as AmperometrySettings)
+                  ? (BackEnd.of(context).getSetting() as AmperometrySettings)
                       .runtime
                       .toString()
                   : '',
@@ -185,10 +185,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
             hint: 'Select Gain Setting',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         AmperometrySettings
-                ? BackEnd.of(context).state.settings.gainSetting
+                ? BackEnd.of(context).getSetting().gainSetting
                 : null,
             callback: (GainSettings val) {
               (_settings as AmperometrySettings).gainSetting = val;
@@ -203,10 +203,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             ],
             values: Electrode.values.toList(),
             hint: 'Select Electrode',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         AmperometrySettings
-                ? BackEnd.of(context).state.settings.electrode
+                ? BackEnd.of(context).getSetting().electrode
                 : null,
             callback: (Electrode val) {
               (_settings as AmperometrySettings).electrode = val;
@@ -227,10 +227,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Initial Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).initialVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .initialVoltage
                       .toString()
                   : '',
@@ -239,10 +239,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Vertex Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).vertexVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .vertexVoltage
                       .toString()
                   : '',
@@ -251,10 +251,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Final Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).finalVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .finalVoltage
                       .toString()
                   : '',
@@ -262,10 +262,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
           ValueInput(
               'Scan Rate (V/s)',
               (double d) => {(_settings as VoltammetrySettings).scanRate = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .scanRate
                       .toString()
                   : '',
@@ -274,10 +274,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Sweep Segments',
               (double d) =>
                   {(_settings as VoltammetrySettings).sweepSegments = d.floor()},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .sweepSegments
                       .toString()
                   : '',
@@ -286,10 +286,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Sample Interval (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).sampleInterval = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .sampleInterval
                       .toString()
                   : '',
@@ -298,10 +298,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
             hint: 'Select Gain Setting',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         VoltammetrySettings
-                ? BackEnd.of(context).state.settings.gainSetting
+                ? BackEnd.of(context).getSetting().gainSetting
                 : null,
             callback: (GainSettings val) {
               (_settings as VoltammetrySettings).gainSetting = val;
@@ -316,10 +316,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             ],
             values: Electrode.values.toList(),
             hint: 'Select Electrode',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         VoltammetrySettings
-                ? BackEnd.of(context).state.settings.electrode
+                ? BackEnd.of(context).getSetting().electrode
                 : null,
             callback: (Electrode val) {
               (_settings as VoltammetrySettings).electrode = val;
