@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sweep_stat_app/file_management/file_manager.dart';
 import '../bluetooth/BluetoothMenu.dart';
@@ -16,11 +17,63 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateWidget(
-      child: MaterialApp(
-        title: appTitle,
-        home: MyHomePage(title: appTitle),
-        debugShowCheckedModeBanner: false,
+        child: MaterialApp(
+      title: appTitle,
+      home: Builder(
+        builder: (context) => introPage(context)),
+      debugShowCheckedModeBanner: false,
+    ));
+  }
+
+  Widget introPage(BuildContext context) {
+    List<PageViewModel> listPagesViewModel = [
+      PageViewModel(
+        title: "Title of first page",
+        body:
+            "Here you can write the description of the page, to explain someting...",
+        image:
+            Center(child: Image.asset("images/sweephelper.png", height: 175.0)),
+        decoration: const PageDecoration(
+          pageColor: Colors.blue,
+        ),
+      ),
+      PageViewModel(
+        title: "Title of second page",
+        body:
+            "Here you can write the description of the page, to explain someting...",
+        image:
+            Center(child: Image.asset("images/sweepstat.png", height: 175.0)),
+        decoration: const PageDecoration(
+          pageColor: Colors.blue,
+        ),
       )
+    ];
+
+    return IntroductionScreen(
+      pages: listPagesViewModel,
+      onDone: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(title: "SweepStat")));
+      },
+      onSkip: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => MyHomePage(title: "SweepStat")));
+      },
+      showSkipButton: true,
+      skip: const Text("Skip", style: TextStyle(fontWeight: FontWeight.w600)),
+      next: const Icon(Icons.navigate_next),
+      done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
+      dotsDecorator: DotsDecorator(
+          size: const Size.square(10.0),
+          activeSize: const Size(20.0, 10.0),
+          color: Colors.black26,
+          spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+          activeShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0))),
     );
   }
 }
@@ -55,9 +108,8 @@ class MyHomePage extends StatefulWidget {
     );
     return _MyHomePage(title: title, intro: intro);
   }
-
-
 }
+
 class _MyHomePage extends State<MyHomePage> {
   _MyHomePage({this.title, this.intro});
 
@@ -71,7 +123,7 @@ class _MyHomePage extends State<MyHomePage> {
       Duration(
         milliseconds: 500,
       ),
-          () {
+      () {
         /// start the intro
         intro.start(context);
       },
@@ -87,11 +139,12 @@ class _MyHomePage extends State<MyHomePage> {
           leading: Builder(
             builder: (context) => IconButton(
                 key: intro.keys[3],
-                onPressed: () async{
+                onPressed: () async {
                   Database db = await DBManager.startDBConnection();
-                  List configs = await DBManager.queryEntireTable(db, EntryType.config);
+                  List configs =
+                      await DBManager.queryEntireTable(db, EntryType.config);
                   Scaffold.of(context).openDrawer();
-                  },
+                },
                 icon: Icon(Icons.menu)),
           ),
           actions: <Widget>[
