@@ -6,6 +6,10 @@ import '../screen/StateWidget.dart';
 FlutterBlue flutterBlue = FlutterBlue.instance;
 
 class BluetoothMenu extends StatefulWidget {
+  const BluetoothMenu({this.key});
+
+  final Key key;
+
   @override
   _BluetoothMenuState createState() => _BluetoothMenuState();
 }

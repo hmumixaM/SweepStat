@@ -10,19 +10,28 @@ import 'DataProcessing.dart';
 import '../screen/StateWidget.dart';
 
 class AnalysisPage extends StatefulWidget {
+  const AnalysisPage({this.buttonKey});
+
+  final Key buttonKey;
+
   @override
   State<StatefulWidget> createState() {
-    return _AnalysisPage();
+    return _AnalysisPage(buttonKey: buttonKey);
   }
 }
 
 class _AnalysisPage extends State<AnalysisPage> {
+  _AnalysisPage({this.buttonKey});
 
+  final Key buttonKey;
   List<List<FlSpot>> _curves;
 
   @override
   void initState() {
-    _curves = [[FlSpot(0,0)], [FlSpot(0,0)]];
+    _curves = [
+      [FlSpot(0, 0)],
+      [FlSpot(0, 0)]
+    ];
     super.initState();
   }
 
@@ -40,51 +49,55 @@ class _AnalysisPage extends State<AnalysisPage> {
     Future<List<List>> data = DataProcessing.read();
     return SafeArea(
         child: Column(
-          children: [
-            Container(
-              height: 420,
-              width: 420,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 15,
-                  right: 15,
-                ),
-                child: LineChartWidget(_curves),
-                // child: LineChartSample1(),
-              ),
+      children: [
+        Container(
+          height: 420,
+          width: 420,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 20,
+              left: 15,
+              right: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 35,
-                bottom: 35,
-                left: 35,
-                right: 35,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                      child:
-                      ElevatedButton(onPressed: () {
-                        BackEnd.of(context).getProcess().startExperiment(context, updateGraph);
-                      }, child: Text("Start"))),
-                  SizedBox(width: 25),
-                  Expanded(
-                      child: ElevatedButton(
-                          onPressed: () {}, child: Text("Stop"))),
-                  SizedBox(width: 25),
-                  Expanded(
-                      child:
-                      ElevatedButton(onPressed: () async {
+            child: LineChartWidget(_curves),
+            // child: LineChartSample1(),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 35,
+            bottom: 35,
+            left: 35,
+            right: 35,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                  child: ElevatedButton(
+                      key: buttonKey,
+                      onPressed: () {
+                        BackEnd.of(context)
+                            .getProcess()
+                            .startExperiment(context, updateGraph);
+                      },
+                      child: Text("Start"))),
+              SizedBox(width: 25),
+              Expanded(
+                  child: ElevatedButton(onPressed: () {}, child: Text("Stop"))),
+              SizedBox(width: 25),
+              Expanded(
+                  child: ElevatedButton(
+                      onPressed: () async {
                         buildAlertDialog(context).then((fileName) {
-                            print(fileName);
+                          print(fileName);
                         });
-                      }, child: Text("Export"))),
-                ],
-              ),
-            )
-          ],
-        ));
+                      },
+                      child: Text("Export"))),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 
   Future<String> buildAlertDialog(BuildContext context) {
