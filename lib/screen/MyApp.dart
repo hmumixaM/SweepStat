@@ -7,8 +7,8 @@ import '../drawer/DrawerPage.dart';
 import '../end_drawer/EndDrawerPage.dart';
 import 'StateWidget.dart';
 
-class MyNewApp extends StatelessWidget {
-  const MyNewApp({Key key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
   static const appTitle = 'SweepStat';
 
   @override
