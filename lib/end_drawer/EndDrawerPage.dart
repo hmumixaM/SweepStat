@@ -158,7 +158,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                           AmperometrySettings
                   ? BackEnd.of(context).state.settings.initialVoltage.toString()
                   : '',
-              voltValid),
+              voltValid,
+              'The voltage that SweepStat started with.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
@@ -168,7 +169,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                           AmperometrySettings
                   ? BackEnd.of(context).state.settings.sampleInterval.toString()
                   : '',
-              voltValid),
+              voltValid, 'The step of voltage when voltage changes.'),
           ValueInput(
               'Run time (S)',
               (double d) => {(_settings as AmperometrySettings).runtime = d},
@@ -179,7 +180,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .runtime
                       .toString()
                   : '',
-              segmentsValid),
+              segmentsValid, 'The total time to run the experiment.'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
@@ -233,7 +234,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .initialVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The voltage that SweepStat started with. Recommend default to be 0V.'),
           ValueInput(
               'Vertex Voltage (V)',
               (double d) =>
@@ -245,7 +246,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .vertexVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The maximum voltage that sweepstat will take. Recommend default to be 1V.'),
           ValueInput(
               'Final Voltage (V)',
               (double d) =>
@@ -257,7 +258,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .finalVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The final voltage where sweepstat end with. Recommend default to be same as the initial volatge.'),
           ValueInput(
               'Scan Rate (V/s)',
               (double d) => {(_settings as VoltammetrySettings).scanRate = d},
@@ -268,7 +269,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .scanRate
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The rate of scanning current.'),
           ValueInput(
               'Sweep Segments',
               (double d) =>
@@ -280,7 +281,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sweepSegments
                       .toString()
                   : '',
-              segmentsValid),
+              segmentsValid, 'Number of segments to do.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
@@ -292,7 +293,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sampleInterval
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The sample interval.'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),

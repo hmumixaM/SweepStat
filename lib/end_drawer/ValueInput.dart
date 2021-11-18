@@ -5,15 +5,20 @@ import 'package:flutter/material.dart';
   Calls callback with double of input on formKey.currentState.save()
 */
 class ValueInput extends StatelessWidget {
-  ValueInput(this.text, this.callback, this.value, this.validator);
+  ValueInput(this.text, this.callback, this.value, this.validator, this.prompt);
 
-  final String text, value; // Text is displayed name, units is the displayed unit val at end
+  final String text, value, prompt;
   final Function callback, validator; // Callback called on save
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        decoration: InputDecoration(labelText: text),
+        decoration: InputDecoration(
+            labelText: text,
+            suffixIcon: IconButton(
+              onPressed: () {buildAlertDialog(context, text, prompt);},
+              icon: Icon(Icons.search),
+            )),
         keyboardType: TextInputType.number,
         initialValue: value,
         validator: (String value) {
@@ -21,7 +26,7 @@ class ValueInput extends StatelessWidget {
             return 'Please Enter a Value';
           } else {
             try {
-              if (this.validator != null){
+              if (this.validator != null) {
                 return this.validator(value);
               } else {
                 double.parse(value);
@@ -36,4 +41,23 @@ class ValueInput extends StatelessWidget {
           callback(double.parse(val));
         });
   }
+}
+
+Future<String> buildAlertDialog(BuildContext context, String value, String prompt) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+            title: Text(value),
+            actions: <Widget>[
+              Text(prompt, style: TextStyle(fontSize: 20)),
+              MaterialButton(
+                elevation: 0.5,
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ]);
+      });
 }
