@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sweep_stat_app/file_management/file_manager.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
 import '../analysis/LineChartWidget.dart';
 import '../experiment/Experiment.dart';
 import 'GraphChart.dart';
