@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sweep_stat_app/file_management/file_manager.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
 import '../bluetooth/BluetoothMenu.dart';
 import 'package:sweep_stat_app/analysis/AnalysisPage.dart';
 import '../drawer/DrawerPage.dart';
@@ -64,11 +64,15 @@ class _MyHomePage extends State<MyHomePage> {
           automaticallyImplyLeading: false,
           leading: Builder(
             builder: (context) => IconButton(
+<<<<<<< HEAD
                 key: intro.keys[5],
                 onPressed: () async {
                   Database db = await DBManager.startDBConnection();
                   List configs =
                       await DBManager.queryEntireTable(db, EntryType.config);
+=======
+                onPressed: () {
+>>>>>>> DB-Work
                   Scaffold.of(context).openDrawer();
                 },
                 icon: Icon(Icons.menu)),

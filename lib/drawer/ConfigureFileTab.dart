@@ -1,131 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:sweep_stat_app/drawer/ConfigureItem.dart';
-import 'package:sweep_stat_app/end_drawer/EndDrawerPage.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
+import 'package:sweep_stat_app/screen/StateWidget.dart';
+import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
+import 'ConfigureItem.dart';
 
 class ConfigureFileTab extends StatefulWidget {
-  //final String name_entries;
-  final double initialV;
-  final double vertexV;
-  final double finalV;
-  ConfigureFileTab(
-      {Key key,
-      @required this.initialV,
-      @required this.vertexV,
-      @required this.finalV})
-      : super(key: key);
+  final List<Map> queryList;
+  ConfigureFileTab(List<Map> queryList) : this.queryList = queryList;
 
   @override
   State<StatefulWidget> createState() {
-    return _ConfigureFileTab();
+    return _ConfigureFileTab(queryList);
   }
 }
 
 class _ConfigureFileTab extends State<ConfigureFileTab> {
+  List<Map<String, dynamic>> queryList;
+  _ConfigureFileTab(List<Map> queryList) : this.queryList = queryList;
+
   @override
   Widget build(BuildContext context) {
-    /* final List<String> nameList = <String>[
-      'Configuration 1',
-      'Configuration 2',
-      'Configuration 3',
-      'Configuration 4'
-    ];*/
-    List<double> initialVList = <double>[1, 2, 3, 12, 2, 0, 1, 1.5, 2.5, 3];
-    List<double> vertexVList = <double>[4, 5, 6, 23, 2, 0, 1, 1.5, 2.5, 3];
-    List<double> finalVList = <double>[7, 8, 9, 30, 2, 0, 1, 1.5, 2.5, 3];
-    List<String> name_entries = <String>[
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10'
-    ];
-    List<Config> ConfigList = <Config>[];
-    initialVList.insert(0, widget.initialV);
-    vertexVList.insert(0, widget.vertexV);
-    finalVList.insert(0, widget.finalV);
-/*    name_entries.add(name_entries.length.toString());*/
-
-    for (int i = 0; i < initialVList.length; i++) {
-      Config newConfig = new Config(
-        name: 'Configuration ' + (i + 1).toString(),
-        initialV: initialVList[i],
-        vertexV: vertexVList[i],
-        finalV: finalVList[i],
-      );
-      ConfigList.add(newConfig);
-    }
-    ;
-
-/*
-    ConfigList.add(new Config(name: 'Configuration ' + (name_entries.length).toString(),
-      initialV: widget.initialV,
-      vertexV: widget.vertexV,
-      finalV: widget.finalV,));
-*/
-
     return new Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(75, 156, 211, 0.8),
         title: const Text('Configuration List'),
       ),
-      body: ListView.separated(
+      body: ListView.builder(
+        itemCount: queryList.length,
+        itemBuilder: (BuildContext context, int index) =>
+            ConfigureItem.widgetizeConfig(queryList[index], context, () {
+          deleteElement(queryList[index], index);
+        }),
         padding: const EdgeInsets.all(8),
-        itemCount: name_entries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildConfigList(ConfigList[index]);
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
       ),
-      /*ListTile(
-        title: Padding(
-          padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-          child: Text('Configuration ' + (name_entries.length).toString()),
-        ),
-        subtitle: Padding(
-          padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
-          child: Text("Type of Experiment: CV\n" +
-              "Initial Voltage: " +
-                widget.initialV.toString() +
-              ", " +
-              "Vertex Voltage: " +
-    widget.vertexV.toString() +
-              ", " +
-              "Final Voltage: " +
-    widget.finalV.toString()+ " Scan Rate: 20V/s,\n Sweep Segments: 20V, Sample Interval: 20V, Run Time: 30s",
-              style: TextStyle(height: 2)),
-
-        ),
-    )*/
     );
   }
-}
 
-Widget _buildConfigList(Config items) {
-  return ListTile(
-    title: Padding(
-      padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-      child: Text(items.name),
-    ),
-    subtitle: Padding(
-      padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
-      child: Text(
-          "Type of Experiment: CV\n" +
-              "Initial Voltage: " +
-              items.initialV.toString() +
-              ", " +
-              "Vertex Voltage: " +
-              items.vertexV.toString() +
-              ", " +
-              "Final Voltage: " +
-              items.finalV.toString() +
-              " Scan Rate: 0.05V/s,\n Sweep Segments: 4V, Sample Interval: 0.01V, Run Time: 30s",
-          style: TextStyle(height: 2)),
-    ),
-    onTap: () => {},
-  );
+  void deleteElement(Map<String, dynamic> entry, int index) async {
+    var currentConfig = BackEnd.of(context).getSetting();
+    ExperimentSettings loadedConfig = ExperimentSettings.fromDBMap(entry);
+    if (currentConfig != null &&
+        currentConfig.hasSameParameters(loadedConfig)) {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("Action Unavailable"),
+              content: const Text(
+                  "You are trying to delete the active configuration. Please switch to another configuration before trying again."),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    } else {
+      Database db = await DBManager.startDBConnection();
+      DBManager.deleteObject(db, EntryType.config, entry["title"]);
+      DBManager.closeDBConnection(db);
+
+      setState(() {
+        List<Map<String, dynamic>> modified = List.from(queryList);
+        modified.removeAt(index);
+        queryList = modified;
+      });
+    }
+  }
 }

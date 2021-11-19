@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sweep_stat_app/file_management/file_manager.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
 import 'ConfigureItem.dart';
 import 'SettingItem.dart';
 
