@@ -64,15 +64,8 @@ class _MyHomePage extends State<MyHomePage> {
           automaticallyImplyLeading: false,
           leading: Builder(
             builder: (context) => IconButton(
-<<<<<<< HEAD
                 key: intro.keys[5],
-                onPressed: () async {
-                  Database db = await DBManager.startDBConnection();
-                  List configs =
-                      await DBManager.queryEntireTable(db, EntryType.config);
-=======
                 onPressed: () {
->>>>>>> DB-Work
                   Scaffold.of(context).openDrawer();
                 },
                 icon: Icon(Icons.menu)),
