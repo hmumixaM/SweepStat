@@ -32,6 +32,7 @@ class _AnalysisPage extends State<AnalysisPage> {
       [FlSpot(0, 0)],
       [FlSpot(0, 0)]
     ];
+    BackEnd.of(context).getProcess().updateGraph(updateGraph);
     super.initState();
   }
 
