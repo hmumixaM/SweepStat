@@ -1,14 +1,19 @@
-import 'package:flutter/material.dart';
-import 'SettingFileTab.dart';
+import 'dart:math';
 
-class Experiment {
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
+import 'SettingFileTab.dart';
+import 'package:sweep_stat_app/experiment/Experiment.dart';
+
+class ExperimentMetadata {
   String name;
   String type;
   String month;
   String date;
   String time;
 
-  Experiment({this.name, this.type, this.month, this.date, this.time});
+  ExperimentMetadata({this.name, this.type, this.month, this.date, this.time});
 }
 
 class SettingItem extends StatefulWidget {
@@ -24,11 +29,11 @@ class _SettingItem extends State<SettingItem> {
   final List<String> dateVList = <String>["29th", "2nd", "13th"];
   final List<String> timeVList = <String>["13:24", "20:15", "8:54"];
   final List<String> typeList = <String>['CV', 'CV', 'CV'];
-  List<Experiment> ExperimentList = <Experiment>[];
+  List<ExperimentMetadata> ExperimentList = <ExperimentMetadata>[];
   @override
   Widget build(BuildContext context) {
     for (int i=0; i<nameList.length; i++) {
-      Experiment newExperiment = new Experiment(
+      ExperimentMetadata newExperiment = new ExperimentMetadata(
         name: nameList[i],
         month: monthVList[i],
         date: dateVList[i],
@@ -65,16 +70,40 @@ class _SettingItem extends State<SettingItem> {
       ],
     );
   }
-  Widget _buildExperiment(Experiment items) {
+  Widget _buildExperiment(ExperimentMetadata metadata,){ //Experiment experiment) {
     return ListTile(
       title: Padding(
         padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-        child: Text(items.name),
+        child: Text(metadata.name),
       ),
       subtitle: Padding(
         padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
-        child: Text("Date: "+items.month+", "+items.date+", "+ items.time + "\n" + "Experiment Type: " + items.type,
+        child: Text("Date: "+metadata.month+", "+metadata.date+", "+ metadata.time + "\n" + "Experiment Type: " + metadata.type,
             style: TextStyle(height: 1.5)),
+      ),
+      leading: IconButton(
+        icon: Icon(Icons.ios_share_outlined, color: Colors.blue),
+        onPressed: () async {
+          ExperimentSettings validCVSettings = VoltammetrySettings(
+            initialVoltage: .5,
+            vertexVoltage: 2.5,
+            finalVoltage: .5,
+            scanRate: .2,
+            sampleInterval: .01,
+            sweepSegments: 6,
+            gainSetting: GainSettings.uA1,
+            electrode: Electrode.silver,
+          );
+
+          Experiment validExperiment = Experiment(validCVSettings);
+          List<FlSpot> returnable = []; //
+          for(int i = 0; i < 200; i++){ //
+            returnable.add(FlSpot(i*.01, sin(i*.01))); //
+          } //
+          validExperiment.dataL = returnable;
+
+          await validExperiment.shareFile(metadata.name);
+        },
       ),
     );
   }

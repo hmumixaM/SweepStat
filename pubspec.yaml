@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   path_provider: ^2.0.5
-  share: ^2.0.4
+  share_plus: ^3.0.4
   permission_handler: ^8.2.2
   fl_chart: ^0.40.0
   flutter_blue: ^0.8.0

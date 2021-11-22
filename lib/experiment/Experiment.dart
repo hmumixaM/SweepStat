@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'ExperimentSettings.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Experiment {
   final ExperimentSettings settings;
@@ -32,17 +34,6 @@ class Experiment {
     for (Function listen in listener) {
       listen(this);
     }
-  }
-
-  Future<Directory> getOrCreateCurrentDirectory() async {
-    if (experimentDir == null) {
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      experimentDir = Directory(appDocDir.path);
-    }
-    if (!await experimentDir.exists()) {
-      experimentDir = await experimentDir.create(recursive: true);
-    }
-    return experimentDir;
   }
 
   List<String> dataToString() {
@@ -84,29 +75,9 @@ class Experiment {
     }
     returnString += this.dataToString().join('\n');
     return returnString;
-
   }
 
-  String saveConfig() {
-    return this.settings.toString();
-  }
-
-  Future<bool> saveExperiment(String fileName) async {
-    String dirName = this.settings is VoltammetrySettings ? 'cv_experiments' : 'amp_experiments';
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    Directory experimentDir = Directory(appDocDir.path+'/' + dirName + '/');
-    if (!await experimentDir.exists()){
-      experimentDir = await experimentDir.create();
-    }
-
-    File experimentFile = new File(experimentDir.path + fileName + '.txt');
-    if (await experimentFile.exists()) return false;
-
-    await experimentFile.writeAsString(this.toString());
-    return true;
-  }
-
-  static Future<Experiment> loadFromFile(File f, String expType) async{
+  /*static Future<Experiment> loadFromFile(File f, String expType) async{
     List<String> lines = await f.readAsLines();
     Experiment e;
     int startLine;
@@ -151,16 +122,15 @@ class Experiment {
     e.dataL= dataL;
     e.dataR = dataR;
     return e;
+  }*/
 
+  Future<void> shareFile(String name) async{
+    var path = (await getExternalStorageDirectory()).path; //switch to getApplicationDocumentsDirectory for release
+    path  = join(path, "$name.csv");
+    var file = File(path);
+
+    file = await file.writeAsString(toString());
+    await Share.shareFiles([path]);
+    //delete file?
   }
-
-
 }
-
-class DataPoints {
-  final double potential;
-  final double current;
-
-  DataPoints(this.potential, this.current);
-}
-
