@@ -15,7 +15,11 @@ class BluetoothProcessing {
   bool clearedPlaceholderL = false;
   String previousPart = "";
   BuildContext context;
+  Function onUpdateGraph;
 
+  void updateGraph(Function onUpdateGraph) {
+    this.onUpdateGraph = onUpdateGraph;
+  }
 
   void startExperiment(BuildContext context, Function updateChart) {
     if (BackEnd.of(context).getBT() == null || !BackEnd.of(context).getBT().isConnected()) {

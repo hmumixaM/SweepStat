@@ -153,41 +153,42 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Initial Voltage (V)',
               (double d) =>
                   {(_settings as AmperometrySettings).initialVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? BackEnd.of(context).state.settings.initialVoltage.toString()
+                  ? BackEnd.of(context).getSetting().initialVoltage.toString()
                   : '',
-              voltValid),
+              voltValid,
+              'The voltage that SweepStat started with.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
                   {(_settings as AmperometrySettings).sampleInterval = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? BackEnd.of(context).state.settings.sampleInterval.toString()
+                  ? BackEnd.of(context).getSetting().sampleInterval.toString()
                   : '',
-              voltValid),
+              voltValid, 'The step of voltage when voltage changes.'),
           ValueInput(
               'Run time (S)',
               (double d) => {(_settings as AmperometrySettings).runtime = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           AmperometrySettings
-                  ? (BackEnd.of(context).state.settings as AmperometrySettings)
+                  ? (BackEnd.of(context).getSetting() as AmperometrySettings)
                       .runtime
                       .toString()
                   : '',
-              segmentsValid),
+              segmentsValid, 'The total time to run the experiment.'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
             hint: 'Select Gain Setting',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         AmperometrySettings
-                ? BackEnd.of(context).state.settings.gainSetting
+                ? BackEnd.of(context).getSetting().gainSetting
                 : null,
             callback: (GainSettings val) {
               (_settings as AmperometrySettings).gainSetting = val;
@@ -202,10 +203,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             ],
             values: Electrode.values.toList(),
             hint: 'Select Electrode',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         AmperometrySettings
-                ? BackEnd.of(context).state.settings.electrode
+                ? BackEnd.of(context).getSetting().electrode
                 : null,
             callback: (Electrode val) {
               (_settings as AmperometrySettings).electrode = val;
@@ -226,81 +227,81 @@ class _EndDrawerpage extends State<EndDrawerPage> {
               'Initial Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).initialVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .initialVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The voltage that SweepStat started with. Recommend default to be 0V.'),
           ValueInput(
               'Vertex Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).vertexVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .vertexVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The maximum voltage that sweepstat will take. Recommend default to be 1V.'),
           ValueInput(
               'Final Voltage (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).finalVoltage = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .finalVoltage
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The final voltage where sweepstat end with. Recommend default to be same as the initial volatge.'),
           ValueInput(
               'Scan Rate (V/s)',
               (double d) => {(_settings as VoltammetrySettings).scanRate = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .scanRate
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The rate of scanning current.'),
           ValueInput(
               'Sweep Segments',
               (double d) =>
                   {(_settings as VoltammetrySettings).sweepSegments = d.floor()},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .sweepSegments
                       .toString()
                   : '',
-              segmentsValid),
+              segmentsValid, 'Number of segments to do.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
                   {(_settings as VoltammetrySettings).sampleInterval = d},
-              BackEnd.of(context).state.settings != null &&
-                      BackEnd.of(context).state.settings.runtimeType ==
+              BackEnd.of(context).getSetting() != null &&
+                      BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
-                  ? (BackEnd.of(context).state.settings as VoltammetrySettings)
+                  ? (BackEnd.of(context).getSetting() as VoltammetrySettings)
                       .sampleInterval
                       .toString()
                   : '',
-              voltValid),
+              voltValid, 'The sample interval.'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
             hint: 'Select Gain Setting',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         VoltammetrySettings
-                ? BackEnd.of(context).state.settings.gainSetting
+                ? BackEnd.of(context).getSetting().gainSetting
                 : null,
             callback: (GainSettings val) {
               (_settings as VoltammetrySettings).gainSetting = val;
@@ -315,10 +316,10 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             ],
             values: Electrode.values.toList(),
             hint: 'Select Electrode',
-            initialVal: BackEnd.of(context).state.settings != null &&
-                    BackEnd.of(context).state.settings.runtimeType ==
+            initialVal: BackEnd.of(context).getSetting() != null &&
+                    BackEnd.of(context).getSetting().runtimeType ==
                         VoltammetrySettings
-                ? BackEnd.of(context).state.settings.electrode
+                ? BackEnd.of(context).getSetting().electrode
                 : null,
             callback: (Electrode val) {
               (_settings as VoltammetrySettings).electrode = val;
