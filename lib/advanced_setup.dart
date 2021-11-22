@@ -3,7 +3,6 @@ import 'package:sweep_stat_app/experiment_settings.dart';
 import 'analysis.dart';
 import 'experiment.dart';
 import 'dart:io';
-import 'package:share/share.dart';
 
 // NOTE: I'm using the main function and the MyApp class for testing until we have a main page implemented
 class AdvancedSetup extends StatelessWidget {
@@ -378,7 +377,7 @@ class _SetupFormState extends State<SetupForm> {
                 Expanded(
                     flex: 5,
                     child: RaisedButton(
-                        onPressed: () => Share.shareFiles([file.path]),
+                        onPressed: () {},//=> Share.shareFiles([file.path]),
                         child: Text('Export'))),
                 Spacer(flex: 1),
                 Expanded(

@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:sweep_stat_app/experiment.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:path_provider/path_provider.dart';
@@ -227,7 +226,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     }
     File experimentFile = new File(experimentDir.path + fileName + '.txt');
     await experimentFile.writeAsString(widget.experiment.toString());
-    await Share.shareFiles(['${experimentDir.path}$fileName.txt']);
+    //await Share.shareFiles(['${experimentDir.path}$fileName.txt']);
     await experimentFile.delete();
     return true;
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sweep_stat_app/experiment/Experiment.dart';
@@ -23,10 +25,9 @@ void main() async{
 
 
 List<FlSpot> smoothDataGenerator(int numPoints){
-  var returnable = [];
+  List<FlSpot> returnable = [];
   for(int i = 0; i < numPoints; i++){
-    double y = i >= numPoints/2 ? i*.02 : i*.01*numPoints - i*.02;
-    returnable.add(FlSpot(i*.01, y));
+    returnable.add(FlSpot(i*.01, sin(i*.01)));
   }
 
   return returnable;
