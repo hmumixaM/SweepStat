@@ -17,7 +17,7 @@ class ValueInput extends StatelessWidget {
             labelText: text,
             suffixIcon: IconButton(
               onPressed: () {buildAlertDialog(context, text, prompt);},
-              icon: Icon(Icons.error),
+              icon: Icon(Icons.error_outline),
             )),
         keyboardType: TextInputType.number,
         initialValue: value,

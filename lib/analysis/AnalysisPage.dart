@@ -51,8 +51,8 @@ class _AnalysisPage extends State<AnalysisPage> {
     Future<List<List>> data = DataProcessing.read();
     return SafeArea(
         child: Column(
-          children: [
-          Container(
+      children: [
+        Container(
           height: 420,
           width: 420,
           child: Padding(
@@ -66,33 +66,36 @@ class _AnalysisPage extends State<AnalysisPage> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.only(
-              top: 35,
-              bottom: 35,
-              left: 35,
-              right: 35,
-            ),
-            child: Row(
-                children: [
-            Expanded(
-            child: ElevatedButton(
-            key: startKey,
-                onPressed: () {
-                  BackEnd.of(context)
-                      .getProcess()
-                      .startExperiment(context, updateGraph);
-                },
-                child: Text("Start"))),
-        SizedBox(width: 25),
-        Expanded(
-            child: ElevatedButton(
-                key: saveKey, onPressed: () {buildAlertDialog(context);}, child: Text("Save"))),
-        SizedBox(width: 25),
-
-    ],
-    ),
-    )
-    ],
+          padding: const EdgeInsets.only(
+            top: 35,
+            bottom: 35,
+            left: 35,
+            right: 35,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                  child: ElevatedButton(
+                      key: startKey,
+                      onPressed: () {
+                        BackEnd.of(context)
+                            .getProcess()
+                            .startExperiment(context, updateGraph);
+                      },
+                      child: Text("Start"))),
+              SizedBox(width: 25),
+              Expanded(
+                  child: ElevatedButton(
+                      key: saveKey,
+                      onPressed: () {
+                        buildAlertDialog(context);
+                      },
+                      child: Text("Save"))),
+              SizedBox(width: 25),
+            ],
+          ),
+        )
+      ],
     ));
   }
 
@@ -120,12 +123,14 @@ class _AnalysisPage extends State<AnalysisPage> {
                   child: Text("Save"),
                   onPressed: () async {
                     Database db = await DBManager.startDBConnection();
-                    var metadata = ExperimentMetadata(name: controller.text, timestamp: DateTime.now());
+                    var metadata = ExperimentMetadata(
+                        name: controller.text, timestamp: DateTime.now());
                     var e = SavedExperiment(
-                      experiment:BackEnd.of(context).getExp(),
-                      metadata: metadata,
-                      settings: BackEnd.of(context).getSetting());
-                    await DBManager.addObject(db, EntryType.experiment, e.toDBMap());
+                        experiment: BackEnd.of(context).getExp(),
+                        metadata: metadata,
+                        settings: BackEnd.of(context).getSetting());
+                    await DBManager.addObject(
+                        db, EntryType.experiment, e.toDBMap());
                     await DBManager.closeDBConnection(db);
 
                     Navigator.of(context).pop();
