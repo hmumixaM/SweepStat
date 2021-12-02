@@ -234,7 +234,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .initialVoltage
                       .toString()
                   : '',
-              voltValid, 'The voltage that SweepStat started with. Recommend default to be 0V.'),
+              voltValid, 'This is the potential that your experiment will start at, and it can be positive or negative. The recommended initial voltage value is based on experiments using ferrocene derivatives\n\nRecommend Value: 0 V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Vertex Voltage (V)',
               (double d) =>
@@ -246,7 +246,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .vertexVoltage
                       .toString()
                   : '',
-              voltValid, 'The maximum voltage that sweepstat will take. Recommend default to be 1V.'),
+              voltValid, 'This is the potential where the cyclic voltammetry experiment will turn around and begin moving in the opposite potential direction. It can be positive or negative. The recommended vertex voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.5V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Final Voltage (V)',
               (double d) =>
@@ -258,7 +258,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .finalVoltage
                       .toString()
                   : '',
-              voltValid, 'The final voltage where sweepstat end with. Recommend default to be same as the initial volatge.'),
+              voltValid, 'This is the potential that your experiment will end at, and it can be positive or negative. The recommended final voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Scan Rate (V/s)',
               (double d) => {(_settings as VoltammetrySettings).scanRate = d},
@@ -269,7 +269,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .scanRate
                       .toString()
                   : '',
-              voltValid, 'The rate of scanning current.'),
+              voltValid, 'his is essentially how fast or slow your experiment moves, it how many volts the Sweepstat will move per second. The scan rate value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.05 V/s\n\nRange: Integer great than 0, but typically somewhere between 0.001 V/s to 1 V/s'),
           ValueInput(
               'Sweep Segments',
               (double d) =>
@@ -281,7 +281,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sweepSegments
                       .toString()
                   : '',
-              segmentsValid, 'Number of segments to do.'),
+              segmentsValid, 'This is the number of segments (i.e., one segment is moving from the initial voltage to the vertex voltage or moving from the vertex voltage to the final voltage) that the Sweepstat will perform. Two segments are considered to be one complete scan.\n\nRecommend Value: 6\n\nRange: Integer greater than 0.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
@@ -293,7 +293,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sampleInterval
                       .toString()
                   : '',
-              voltValid, 'The sample interval.'),
+              voltValid, 'This the frequency at which the data will be collected (i.e., a point will be recorded every 0.01 V using the recommended value). The smaller the sample interval, the larger the file will be.\n\nRecommend Value: 0.01 V\n\nRange: Integer greater than 0'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),

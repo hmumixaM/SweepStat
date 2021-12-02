@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getInt('first') == null) {
       print('first time');
-      // await prefs.setInt('first', 1);
+      await prefs.setInt('first', 1);
       return IntroScreen.id;
     } else {
       print('other');

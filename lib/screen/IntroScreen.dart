@@ -7,9 +7,9 @@ class IntroScreen extends StatelessWidget {
   static String id = 'IntroScreen';
   final List<PageViewModel> listPagesViewModel = [
     PageViewModel(
-      title: "Title of first page",
+      title: "Welcome to the SweepStat App",
       body:
-      "Here you can write the description of the page, to explain someting...",
+      "Here you are to use the App to start the experiment, analyze the data, and export the result.",
       image:
       Center(child: Image.asset("images/sweephelper.png", height: 175.0)),
       decoration: const PageDecoration(
@@ -17,11 +17,21 @@ class IntroScreen extends StatelessWidget {
       ),
     ),
     PageViewModel(
-      title: "Title of second page",
+      title: "This is your SweepStat hardware.",
       body:
-      "Here you can write the description of the page, to explain someting...",
+      "For source code and assembly instructions, please follow the SweepStat website.",
       image:
-      Center(child: Image.asset("images/sweepstat.png", height: 175.0)),
+      Center(child: Image.asset("images/sweepstat.png", height: 250.0)),
+      decoration: const PageDecoration(
+        pageColor: Colors.blue,
+      ),
+    ),
+    PageViewModel(
+      title: "BE CAREFUL BEFORE YOU USE!",
+      body:
+      "1. Open the bluetooth switch before you try to collect data. (Otherwise it will be only noises)\n2. Press the reset button whenever you don't know what happened.\n3. !!! Close the bluetooth switch to save your bluetooth battery.",
+      image:
+      Center(child: Image.asset("images/explain.png", height: 300.0)),
       decoration: const PageDecoration(
         pageColor: Colors.blue,
       ),
