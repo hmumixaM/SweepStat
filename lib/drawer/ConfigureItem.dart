@@ -39,24 +39,43 @@ class ConfigureItem extends StatefulWidget {
           subtitle: Padding(
             padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
             child: Text(
-                entry["type"] == "Voltammetry"
-                    ? "Initial Voltage: " +
+                entry["type"] == "CV"
+                    ? "Type: Voltammetry\n" +
+                    "Initial V: " +
                     entry["initialVoltage"].toString() +
                     ", " +
-                    "Vertex Voltage: " +
+                    "Vertex V: " +
                     entry["vertexVoltage"].toString() +
                     ", " +
-                    "Final Voltage: " +
-                    entry["finalVoltage"].toString()
+                    "Final V: " +
+                    entry["finalVoltage"].toString() +
+                    ", Scan Rate: " +
+                    entry["scanRate"].toString() +
+                    ", " +
+                    "Sweep Seg: " +
+                    entry["sampleInterval"].toString() +
+                    ", " +
+                    "Sample Interval: " +
+                    entry["sampleInterval"].toString() +
+                    ", " +
+                    "Gain: " +
+                    entry["gainSetting"].toString() +
+                    ", " +
+                    "Electrode: " +
+                    entry["electrode"].toString()
                     : //split here
-                "Initial Voltage: " +
+                "Type: Amperometry\n" +
+                    "Initial Voltage: " +
                     entry["initialVoltage"].toString() +
                     ", " +
                     "Sample Interval: " +
                     entry["sampleInterval"].toString() +
                     ", " +
-                    "Run Time: " +
-                    entry["runtime"].toString(),
+                    "Gain: " +
+                    entry["gainSetting"].toString() +
+                    ", " +
+                    "Electrode: " +
+                    entry["electrode"].toString(),
                 style: TextStyle(height: 1.5)),
           ),
           onTap: () {
