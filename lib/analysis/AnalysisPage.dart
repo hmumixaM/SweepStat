@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/drawer/ExperimentItem.dart';
 import 'package:sweep_stat_app/file_management/FileManager.dart';
 import '../analysis/LineChartWidget.dart';
 import '../experiment/Experiment.dart';
@@ -32,7 +33,7 @@ class _AnalysisPage extends State<AnalysisPage> {
       [FlSpot(0, 0)],
       [FlSpot(0, 0)]
     ];
-    BackEnd.of(context).getProcess().updateGraph(updateGraph);
+    //BackEnd.of(context).getProcess().updateGraph(updateGraph);
     super.initState();
   }
 
@@ -85,17 +86,9 @@ class _AnalysisPage extends State<AnalysisPage> {
         SizedBox(width: 25),
         Expanded(
             child: ElevatedButton(
-                key: saveKey, onPressed: () {}, child: Text("Save"))),
+                key: saveKey, onPressed: () {buildAlertDialog(context);}, child: Text("Save"))),
         SizedBox(width: 25),
-        Expanded(
-            child: ElevatedButton(
-                key: shareKey,
-                onPressed: () async {
-        buildAlertDialog(context).then((fileName) {
-        print(fileName);
-        });
-        },
-            child: Text("Share"))),
+
     ],
     ),
     )
@@ -127,11 +120,15 @@ class _AnalysisPage extends State<AnalysisPage> {
                   child: Text("Save"),
                   onPressed: () async {
                     Database db = await DBManager.startDBConnection();
-                    //todo: store experiment in database
-                    print(BackEnd.of(context).getExp().dataToString());
-                    DBManager.closeDBConnection(db);
+                    var metadata = ExperimentMetadata(name: controller.text, timestamp: DateTime.now());
+                    var e = SavedExperiment(
+                      experiment:BackEnd.of(context).getExp(),
+                      metadata: metadata,
+                      settings: BackEnd.of(context).getSetting());
+                    await DBManager.addObject(db, EntryType.experiment, e.toDBMap());
+                    await DBManager.closeDBConnection(db);
 
-                    Navigator.of(context).pop(controller.text.toString());
+                    Navigator.of(context).pop();
                   },
                 )
               ]);

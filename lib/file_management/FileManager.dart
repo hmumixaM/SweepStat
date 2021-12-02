@@ -14,7 +14,7 @@ class DBManager {
 
   static Future<void> initTables(Database db) async {
     await db.execute(
-        "CREATE TABLE experiments(id INTEGER PRIMARY KEY, type TEXT NOT NULL, title TEXT UNIQUE NOT NULL, initialVoltage REAL NOT NULL, vertexVoltage REAL, finalVoltage REAL, scanRate REAL, sweepSegments INTEGER, sampleInterval REAL NOT NULL, gainSetting TEXT NOT NULL, electrode TEXT NOT NULL, dataPoints TEXT NOT NULL)");
+        "CREATE TABLE experiments(id INTEGER PRIMARY KEY, type TEXT NOT NULL, title TEXT UNIQUE NOT NULL, initialVoltage REAL NOT NULL, vertexVoltage REAL, finalVoltage REAL, scanRate REAL, sweepSegments INTEGER, sampleInterval REAL NOT NULL, gainSetting TEXT NOT NULL, electrode TEXT NOT NULL, dataPoints TEXT NOT NULL, timestamp TEXT NOT NULL)");
     return await db.execute(""
         "CREATE TABLE configs(id INTEGER PRIMARY KEY, type TEXT NOT NULL, title TEXT UNIQUE NOT NULL, initialVoltage REAL NOT NULL, vertexVoltage REAL, finalVoltage REAL, scanRate REAL, sweepSegments INTEGER, gainSetting TEXT NOT NULL, electrode TEXT NOT NULL, sampleInterval REAL NOT NULL, runtime REAL)");
   }
@@ -40,7 +40,7 @@ class DBManager {
 
   static Future<int> deleteObject(Database db, EntryType type, String title) async{
     String table = objectToTableNameMap[type];
-    return await db.delete('configs', where: 'title=?', whereArgs: [title]);
+    return await db.delete(table, where: 'title=?', whereArgs: [title]);
   }
 
   static Future<Map> queryExpectOneResult(Database db, EntryType type, String title) async{

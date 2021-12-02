@@ -19,8 +19,17 @@ class StateWidget extends StatefulWidget {
 
 class _StateWidgetState extends State<StateWidget> {
   CoreState state = CoreState(
-      experiment: null,
-      settings: null,
+      experiment: Experiment(),
+      settings: VoltammetrySettings(
+        initialVoltage: 0.0,
+        vertexVoltage: 1.0,
+        finalVoltage: -1.0,
+        sampleInterval: .01,
+        sweepSegments: 2,
+        scanRate: 0.5,
+        gainSetting: GainSettings.uA1,
+        electrode: Electrode.calomel,
+      ),
       sweepStatBTConnection: null,
       bluetoothProcessing: BluetoothProcessing());
 

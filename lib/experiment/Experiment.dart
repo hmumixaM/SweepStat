@@ -3,18 +3,17 @@ import 'dart:io';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sweep_stat_app/drawer/ExperimentItem.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
 import 'ExperimentSettings.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Experiment {
-  final ExperimentSettings settings;
-  List<FlSpot> dataL = [FlSpot(0,0)];
-  List<FlSpot> dataR = [FlSpot(0,0)];
-  Directory experimentDir;
+  List<FlSpot> dataL = [FlSpot(0.0,0.0)];
+  List<FlSpot> dataR = [FlSpot(0.0,0.0)];
   bool isExperimentInProgress = false;
   List<Function> listener = [];
 
-  Experiment(this.settings);
 
   void addL(FlSpot a) {
     dataL.add(a);
@@ -36,7 +35,7 @@ class Experiment {
     }
   }
 
-  List<String> dataToString() {
+  List<String> dataToStringList() {
     try {
       List<FlSpot> dataRCopy = [];
       dataRCopy.addAll(dataR);
@@ -47,34 +46,6 @@ class Experiment {
     } catch (IOException) {
       return null;
     }
-  }
-
-
-  @override
-  String toString() {
-    String returnString;
-    if (this.settings is VoltammetrySettings){
-      VoltammetrySettings v = this.settings;
-      returnString = 'Cyclic Voltammetry\n' +
-          'Gain Setting: ' + v.gainSetting.toString().split('.').last + '\n' +
-          'Ref. Electrode: ' + v.electrode.toString().split('.').last + '\n\n' +
-          'Init E (V) = ' + v.initialVoltage.toString() + '\n' +
-          'Vertex E (V) = ' + v.vertexVoltage.toString() + '\n' +
-          'Final E (V) = ' + v.finalVoltage.toString() + '\n' +
-          'Scan Rate (V/s) = ' + v.scanRate.toString() + '\n' +
-          'Sweep Segments = ' + v.sweepSegments.toString() + '\n' +
-          'Sample Interval (V) = ' + v.sampleInterval.toString() + '\n\n';
-    } else {
-      AmperometrySettings a = this.settings;
-      returnString = 'Amperometry\n' +
-          'Gain Setting: ' + a.gainSetting.toString().split('.').last + '\n' +
-          'Ref. Electrode: ' + a.electrode.toString().split('.').last + '\n\n' +
-          'Initial E (V) = ' + a.initialVoltage.toString() + '\n' +
-          'Sample Interval (V) = ' + a.sampleInterval.toString() + '\n' +
-          'Runtime (S) = ' + a.runtime.toString() + '\n\n';
-    }
-    returnString += this.dataToString().join('\n');
-    return returnString;
   }
 
   /*static Future<Experiment> loadFromFile(File f, String expType) async{
@@ -124,13 +95,92 @@ class Experiment {
     return e;
   }*/
 
-  Future<void> shareFile(String name) async{
+  static Experiment fromCSVText(String csvText, ExperimentSettings settings){
+    Experiment returnable = Experiment();
+    List<String> lines = csvText.split("\n");
+    bool isRisingVoltage = true;
+    for(int i = 1; i < lines.length; i++){
+      double potential = double.parse(lines[i].split(', ').first);
+      double current = double.parse(lines[i].split(', ').last);
+      FlSpot point = FlSpot(potential, current);
+      if (settings is VoltammetrySettings && isRisingVoltage && potential >= (settings as VoltammetrySettings).vertexVoltage) isRisingVoltage = false;
+      if (isRisingVoltage){
+        returnable.dataL.add(point);
+      } else {
+        returnable.dataR.add(point);
+      }
+    }
+    return returnable;
+  }
+}
+
+class SavedExperiment{
+  Experiment experiment;
+  ExperimentMetadata metadata;
+  ExperimentSettings settings;
+
+  SavedExperiment({this.experiment, this.metadata, this.settings});
+
+  Map<String, dynamic> toDBMap(){
+    Map<String, dynamic> returnable = {};
+
+    var settingsMap = settings.toDBMap("");
+    settingsMap.remove('title');
+
+    returnable.addAll(settingsMap);
+    returnable['title'] = metadata.name;
+    returnable['timestamp'] = metadata.timestamp.toString();
+    returnable['dataPoints'] = experiment.dataToStringList().join("\n");
+
+    return returnable;
+  }
+
+  static SavedExperiment fromDBMap(Map<String, dynamic> map){
+    SavedExperiment returnable = SavedExperiment();
+    returnable.settings = ExperimentSettings.fromDBMap(map);
+    returnable.experiment = Experiment.fromCSVText(map['dataPoints'], returnable.settings);
+    returnable.metadata = ExperimentMetadata(
+      name: map['title'],
+      timestamp: DateTime.parse(map['timestamp']),
+    );
+
+    return returnable;
+  }
+
+  @override
+  String toString() {
+    String returnString;
+    if (this.settings is VoltammetrySettings){
+      VoltammetrySettings v = this.settings;
+      returnString = 'Cyclic Voltammetry\n' +
+          'Gain Setting: ' + v.gainSetting.toString().split('.').last + '\n' +
+          'Ref. Electrode: ' + v.electrode.toString().split('.').last + '\n\n' +
+          'Init E (V) = ' + v.initialVoltage.toString() + '\n' +
+          'Vertex E (V) = ' + v.vertexVoltage.toString() + '\n' +
+          'Final E (V) = ' + v.finalVoltage.toString() + '\n' +
+          'Scan Rate (V/s) = ' + v.scanRate.toString() + '\n' +
+          'Sweep Segments = ' + v.sweepSegments.toString() + '\n' +
+          'Sample Interval (V) = ' + v.sampleInterval.toString() + '\n\n';
+    } else {
+      AmperometrySettings a = this.settings;
+      returnString = 'Amperometry\n' +
+          'Gain Setting: ' + a.gainSetting.toString().split('.').last + '\n' +
+          'Ref. Electrode: ' + a.electrode.toString().split('.').last + '\n\n' +
+          'Initial E (V) = ' + a.initialVoltage.toString() + '\n' +
+          'Sample Interval (V) = ' + a.sampleInterval.toString() + '\n' +
+          'Runtime (S) = ' + a.runtime.toString() + '\n\n';
+    }
+    returnString += experiment.dataToStringList().join('\n');
+    return returnString;
+  }
+
+  Future<void> shareFile() async{
     var path = (await getExternalStorageDirectory()).path; //switch to getApplicationDocumentsDirectory for release
-    path  = join(path, "$name.csv");
+    path  = join(path, "${metadata.name}.csv");
     var file = File(path);
 
     file = await file.writeAsString(toString());
     await Share.shareFiles([path]);
-    //delete file?
+    file.delete(); //this line needs testing to ensure existence during task
   }
 }

@@ -25,6 +25,13 @@ class _ConfigureFileTab extends State<ConfigureFileTab> {
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(75, 156, 211, 0.8),
         title: const Text('Configuration List'),
+        leading: IconButton(
+          icon: Icon(Icons.keyboard_arrow_left),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: ListView.builder(
         itemCount: queryList.length,
@@ -38,38 +45,16 @@ class _ConfigureFileTab extends State<ConfigureFileTab> {
   }
 
   void deleteElement(Map<String, dynamic> entry, int index) async {
-    var currentConfig = BackEnd.of(context).getSetting();
     ExperimentSettings loadedConfig = ExperimentSettings.fromDBMap(entry);
-    if (currentConfig != null &&
-        currentConfig.hasSameParameters(loadedConfig)) {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Action Unavailable"),
-              content: const Text(
-                  "You are trying to delete the active configuration. Please switch to another configuration before trying again."),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          });
-    } else {
-      Database db = await DBManager.startDBConnection();
-      DBManager.deleteObject(db, EntryType.config, entry["title"]);
-      DBManager.closeDBConnection(db);
 
-      setState(() {
-        List<Map<String, dynamic>> modified = List.from(queryList);
-        modified.removeAt(index);
-        queryList = modified;
-      });
-    }
+    Database db = await DBManager.startDBConnection();
+    await DBManager.deleteObject(db, EntryType.config, entry["title"]);
+    await DBManager.closeDBConnection(db);
+
+    setState(() {
+      List<Map<String, dynamic>> modified = List.from(queryList);
+      modified.removeAt(index);
+      queryList = modified;
+    });
   }
 }
