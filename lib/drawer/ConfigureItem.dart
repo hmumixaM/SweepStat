@@ -63,8 +63,8 @@ class ConfigureItem extends StatefulWidget {
             BackEnd.of(context).newSettings(ExperimentSettings.fromDBMap(entry));
             Navigator.pop(context);
           },
-          trailing: IconButton(
-            icon: onDelete == null ? null : Icon(
+          trailing: onDelete == null ? null : IconButton(
+            icon: Icon(
               Icons.delete_forever_outlined,
               color: Colors.red,
             ),
