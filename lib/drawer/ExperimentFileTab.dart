@@ -1,48 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sweep_stat_app/experiment/Experiment.dart';
+import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
+import 'package:sweep_stat_app/file_management/FileManager.dart';
+import 'package:sweep_stat_app/screen/StateWidget.dart';
 
-class SettingFileTab extends StatefulWidget {
+import 'ExperimentItem.dart';
+
+class ExperimentFileTab extends StatefulWidget {
+  final List<Map> queryList;
+  ExperimentFileTab(List<Map> queryList) : this.queryList = queryList;
+
   @override
   State<StatefulWidget> createState() {
-    return _SettingFileTab();
+    return _ExperimentFileTab(queryList);
   }
 }
 
-class _SettingFileTab extends State<SettingFileTab> {
+class _ExperimentFileTab extends State<ExperimentFileTab> {
+  List<Map<String, dynamic>> queryList;
+  _ExperimentFileTab(List<Map> queryList) : this.queryList = queryList;
+
   @override
   Widget build(BuildContext context) {
-    final List<String> entries = <String>['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    //final List<String> entries = <String>['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     //final List<int> colorCodes = <int>[600, 500, 100];
     return new Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(75, 156, 211, 0.8),
           title: const Text('Configuration List'),
+          leading: IconButton(
+            icon: Icon(Icons.keyboard_arrow_left),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+          ),
         ),
-        body: ListView.separated(
-            padding: const EdgeInsets.all(8),
-            itemCount: entries.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                  title: Padding(
-                  padding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
-                      child: Text('Experiment $index'),
-                  ),
-                  subtitle: Padding(
-                  padding: EdgeInsets.fromLTRB(10.0, 5.0, 5.0, 5.0),
-                      child: Text("Type of Experiment: CV\n"
-                                  "Date: 2021.10.14\n"
-                                  "Start Time: 13:10\n"
-                                  "End Time: 15:20\n"
-                                  "Configuration: Initial Voltage: -0.5V, Vertex Voltage: 1V, Final Voltage: 0.5V, Scan Rate: 20V/s,\n Sweep Segments: 20V, Sample Interval: 20V, Run Time: 30s",
-                                  style: TextStyle(height: 2)),
+        body: ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: queryList.length,
+          itemBuilder: (BuildContext context, int index) =>
+              ExperimentItem.widgetizeExperiment(
+                  SavedExperiment.fromDBMap(queryList[index]), () {
+            deleteElement(queryList[index], index);
+          }, context),
+        ));
+  }
 
-                  ),
+  void deleteElement(Map<String, dynamic> entry, int index) async {
+    Database db = await DBManager.startDBConnection();
+    print(entry['title']);
+    await DBManager.deleteObject(db, EntryType.experiment, entry["title"]);
+    print(await DBManager.queryEntireTable(db, EntryType.experiment));
+    await DBManager.closeDBConnection(db);
 
-                  onTap: () => {},
-              );
-
-      },
-            separatorBuilder: (BuildContext context, int index) => const Divider(),
-    )
-    );
+    setState(() {
+      List<Map<String, dynamic>> modified = List.from(queryList);
+      modified.removeAt(index);
+      queryList = modified;
+    });
   }
 }

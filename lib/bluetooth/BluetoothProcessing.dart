@@ -40,7 +40,7 @@ class BluetoothProcessing {
       expTimeout = null;
     });
 
-    Experiment experiment = Experiment(BackEnd.of(context).getSetting());
+    Experiment experiment = Experiment();
     BackEnd.of(context).newExperiment(experiment);
     BackEnd.of(context).getExp().addListener(updateChart);
     BackEnd.of(context).getBT().writeToSweepStat(BackEnd.of(context).getSetting().toBTString());
@@ -89,7 +89,7 @@ class BluetoothProcessing {
       return;
     }
     if (isRisingVoltage && volt >=
-        (BackEnd.of(context).getExp().settings as VoltammetrySettings).vertexVoltage)
+        (BackEnd.of(context).getSetting() as VoltammetrySettings).vertexVoltage)
       isRisingVoltage = false;
     if (isRisingVoltage) {
       BackEnd.of(context).getExp().addL(new FlSpot(volt, charge));

@@ -57,7 +57,7 @@ abstract class ExperimentSettings {
   static ExperimentSettings fromDBMap(Map<String, dynamic> dbMap){
     ExperimentSettings result;
 
-    if(dbMap["type"] == "Voltammetry"){
+    if(dbMap["type"] == "CV"){
       result = VoltammetrySettings(
         initialVoltage: dbMap["initialVoltage"],
         vertexVoltage: dbMap["vertexVoltage"],

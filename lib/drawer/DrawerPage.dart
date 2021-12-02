@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sweep_stat_app/file_management/FileManager.dart';
 import 'ConfigureItem.dart';
-import 'SettingItem.dart';
+import 'ExperimentItem.dart';
 
 class DrawerPage extends StatelessWidget {
   @override
@@ -21,7 +21,7 @@ class DrawerPage extends StatelessWidget {
         ),
         ConfigureItem(),
         //ConfigureFileTab(),
-        SettingItem(),
+        ExperimentItem(),
       ]),
     );
   }

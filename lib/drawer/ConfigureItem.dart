@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sweep_stat_app/file_management/FileManager.dart';
 import 'package:sweep_stat_app/screen/StateWidget.dart';
 import 'package:sweep_stat_app/experiment/ExperimentSettings.dart';
@@ -65,7 +64,7 @@ class ConfigureItem extends StatefulWidget {
             Navigator.pop(context);
           },
           trailing: IconButton(
-            icon: Icon(
+            icon: onDelete == null ? null : Icon(
               Icons.delete_forever_outlined,
               color: Colors.red,
             ),
@@ -89,9 +88,13 @@ class ConfigureItem extends StatefulWidget {
 
     return output;
   }
+}
 
-  static List<Widget> buildConfigDrawerMenu(List<Map> query, BuildContext context, void Function() onDelete) {
-    var output = dbQueryToWidgets(query, true, context, onDelete);
+class _ConfigureItem extends State<ConfigureItem> {
+
+  @override
+  List<Widget> buildConfigDrawerMenu(List<Map> query, BuildContext context, void Function() onDelete) {
+    var output = ConfigureItem.dbQueryToWidgets(query, true, context, onDelete);
     output.add(
       ListTile(
         title: Padding(
@@ -106,16 +109,15 @@ class ConfigureItem extends StatefulWidget {
                   ConfigureFileTab(query),
             ),
           );
+          setState(() {
+
+          });
         },
       ),
     );
     return output;
   }
-}
 
-class _ConfigureItem extends State<ConfigureItem> {
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       builder: (context, snapshot) {
@@ -128,7 +130,7 @@ class _ConfigureItem extends State<ConfigureItem> {
               'Configurations',
               textScaleFactor: 1.25,
             ),
-            children: ConfigureItem.buildConfigDrawerMenu(snapshot.data, context, () {}),
+            children: buildConfigDrawerMenu(snapshot.data, context, null),
           );
         }
       },
