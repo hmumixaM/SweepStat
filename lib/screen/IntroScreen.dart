@@ -4,6 +4,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'MyApp.dart';
 
 class IntroScreen extends StatelessWidget {
+  static String id = 'IntroScreen';
   final List<PageViewModel> listPagesViewModel = [
     PageViewModel(
       title: "Title of first page",
