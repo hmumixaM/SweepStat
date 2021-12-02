@@ -10,14 +10,22 @@ class ValueInput extends StatelessWidget {
   final String text, value, prompt;
   final Function callback, validator; // Callback called on save
 
+
+
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+        child: SingleChildScrollView(
+        child:TextFormField(
+            //ocusNode: focusNode,
+            autofocus:true,
         decoration: InputDecoration(
             labelText: text,
             suffixIcon: IconButton(
               onPressed: () {buildAlertDialog(context, text, prompt);},
-              icon: Icon(Icons.error_outline),
+              icon: Icon(Icons.error),
             )),
         keyboardType: TextInputType.number,
         initialValue: value,
@@ -39,8 +47,10 @@ class ValueInput extends StatelessWidget {
         },
         onSaved: (String val) {
           callback(double.parse(val));
-        });
+        }
+        )));
   }
+
 }
 
 Future<String> buildAlertDialog(BuildContext context, String value, String prompt) {

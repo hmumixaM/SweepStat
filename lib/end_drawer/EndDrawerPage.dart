@@ -54,38 +54,49 @@ class _EndDrawerpage extends State<EndDrawerPage> {
 
   @override
   Widget build(BuildContext context) {
-    BackEnd.of(context).getSetting() != null
-        && BackEnd.of(context).getSetting().runtimeType.toString() == 'Amperometry'
+    BackEnd.of(context).getSetting() != null &&
+            BackEnd.of(context).getSetting().runtimeType.toString() ==
+                'Amperometry'
         ? 'Amperometry'
         : 'Voltammetry';
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
+        //child: SingleChildScrollView(
+        child: ListView(padding: EdgeInsets.zero, children: [
+      Container(
+          height: 80.0,
+          //width: 100.0,
+          child: DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Color.fromRGBO(75, 156, 211, 0.8),
             ),
             child: Center(
                 child: Text(
               'Experiment Configuration',
-              textScaleFactor: 2,
+              style: TextStyle(fontSize: 20, color: Colors.white),
+              textAlign: TextAlign.center,
             )),
-          ),
-          new DropDownInput(
-            labelStrings: ["Amperometry", "Voltammetry"],
-            values: ["Amperometry", "Voltammetry"],
-            hint: "Select mode of experiment",
-            initialVal: _mode,
-            callback: () {},
-            onChange: modeChange,
-          ),
-          _mode == "Amperometry"
-              ? buildAmperometryForm(context)
-              : buildVoltammetryForm(context),
+          )),
+      new DropDownInput(
+        labelStrings: ["Amperometry", "Voltammetry"],
+        values: ["Amperometry", "Voltammetry"],
+        hint: "Select mode of experiment",
+        initialVal: _mode,
+        callback: () {},
+        onChange: modeChange,
+      ),
+      _mode == "Amperometry"
+          ? buildAmperometryForm(context)
+          : buildVoltammetryForm(context),
+      Wrap(
+        children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
             child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(75, 156, 211, 0.8),
+                minimumSize: Size(
+                    120, 35), // takes postional arguments as width and height
+              ),
               onPressed: () {
                 if (saveSettings()) Navigator.of(context).pop();
               },
@@ -93,14 +104,21 @@ class _EndDrawerpage extends State<EndDrawerPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
             child: ElevatedButton(
-              onPressed: () async{
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(75, 156, 211, 0.8),
+                minimumSize: Size(
+                    120, 35), // takes postional arguments as width and height
+              ),
+              onPressed: () async {
                 if (saveSettings())
-                  buildAlertDialog(context).then((fileName) async{
+                  buildAlertDialog(context).then((fileName) async {
                     Database db = await DBManager.startDBConnection();
-                    await DBManager.addObject(db, EntryType.config, BackEnd.of(context).getSetting().toDBMap(fileName));
-                    var query = await DBManager.queryEntireTable(db, EntryType.config);
+                    await DBManager.addObject(db, EntryType.config,
+                        BackEnd.of(context).getSetting().toDBMap(fileName));
+                    var query =
+                        await DBManager.queryEntireTable(db, EntryType.config);
                     print(query);
                     DBManager.closeDBConnection(db);
                   });
@@ -110,7 +128,7 @@ class _EndDrawerpage extends State<EndDrawerPage> {
           ),
         ],
       ),
-    );
+    ]));
   }
 
   Future<String> buildAlertDialog(BuildContext context) {
@@ -169,7 +187,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                           AmperometrySettings
                   ? BackEnd.of(context).getSetting().sampleInterval.toString()
                   : '',
-              voltValid, 'The step of voltage when voltage changes.'),
+              voltValid,
+              'The step of voltage when voltage changes.'),
           ValueInput(
               'Run time (S)',
               (double d) => {(_settings as AmperometrySettings).runtime = d},
@@ -180,7 +199,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .runtime
                       .toString()
                   : '',
-              segmentsValid, 'The total time to run the experiment.'),
+              segmentsValid,
+              'The total time to run the experiment.'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),
@@ -221,7 +241,6 @@ class _EndDrawerpage extends State<EndDrawerPage> {
     return Form(
       key: _fromKeyV,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ValueInput(
               'Initial Voltage (V)',
@@ -234,7 +253,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .initialVoltage
                       .toString()
                   : '',
-              voltValid, 'This is the potential that your experiment will start at, and it can be positive or negative. The recommended initial voltage value is based on experiments using ferrocene derivatives\n\nRecommend Value: 0 V\n\nRange: -1.5 V to 1.5 V'),
+              voltValid,
+              'This is the potential that your experiment will start at, and it can be positive or negative. The recommended initial voltage value is based on experiments using ferrocene derivatives\n\nRecommend Value: 0 V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Vertex Voltage (V)',
               (double d) =>
@@ -246,7 +266,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .vertexVoltage
                       .toString()
                   : '',
-              voltValid, 'This is the potential where the cyclic voltammetry experiment will turn around and begin moving in the opposite potential direction. It can be positive or negative. The recommended vertex voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.5V\n\nRange: -1.5 V to 1.5 V'),
+              voltValid,
+              'This is the potential where the cyclic voltammetry experiment will turn around and begin moving in the opposite potential direction. It can be positive or negative. The recommended vertex voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.5V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Final Voltage (V)',
               (double d) =>
@@ -258,7 +279,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .finalVoltage
                       .toString()
                   : '',
-              voltValid, 'This is the potential that your experiment will end at, and it can be positive or negative. The recommended final voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0V\n\nRange: -1.5 V to 1.5 V'),
+              voltValid,
+              'This is the potential that your experiment will end at, and it can be positive or negative. The recommended final voltage value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0V\n\nRange: -1.5 V to 1.5 V'),
           ValueInput(
               'Scan Rate (V/s)',
               (double d) => {(_settings as VoltammetrySettings).scanRate = d},
@@ -269,11 +291,13 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .scanRate
                       .toString()
                   : '',
-              voltValid, 'his is essentially how fast or slow your experiment moves, it how many volts the Sweepstat will move per second. The scan rate value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.05 V/s\n\nRange: Integer great than 0, but typically somewhere between 0.001 V/s to 1 V/s'),
+              voltValid,
+              'his is essentially how fast or slow your experiment moves, it how many volts the Sweepstat will move per second. The scan rate value is based on experiments using ferrocene derivatives.\n\nRecommend Value: 0.05 V/s\n\nRange: Integer great than 0, but typically somewhere between 0.001 V/s to 1 V/s'),
           ValueInput(
               'Sweep Segments',
-              (double d) =>
-                  {(_settings as VoltammetrySettings).sweepSegments = d.floor()},
+              (double d) => {
+                    (_settings as VoltammetrySettings).sweepSegments = d.floor()
+                  },
               BackEnd.of(context).getSetting() != null &&
                       BackEnd.of(context).getSetting().runtimeType ==
                           VoltammetrySettings
@@ -281,7 +305,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sweepSegments
                       .toString()
                   : '',
-              segmentsValid, 'This is the number of segments (i.e., one segment is moving from the initial voltage to the vertex voltage or moving from the vertex voltage to the final voltage) that the Sweepstat will perform. Two segments are considered to be one complete scan.\n\nRecommend Value: 6\n\nRange: Integer greater than 0.'),
+              segmentsValid,
+              'This is the number of segments (i.e., one segment is moving from the initial voltage to the vertex voltage or moving from the vertex voltage to the final voltage) that the Sweepstat will perform. Two segments are considered to be one complete scan.\n\nRecommend Value: 6\n\nRange: Integer greater than 0.'),
           ValueInput(
               'Sample Interval (V)',
               (double d) =>
@@ -293,7 +318,8 @@ class _EndDrawerpage extends State<EndDrawerPage> {
                       .sampleInterval
                       .toString()
                   : '',
-              voltValid, 'This the frequency at which the data will be collected (i.e., a point will be recorded every 0.01 V using the recommended value). The smaller the sample interval, the larger the file will be.\n\nRecommend Value: 0.01 V\n\nRange: Integer greater than 0'),
+              voltValid,
+              'This the frequency at which the data will be collected (i.e., a point will be recorded every 0.01 V using the recommended value). The smaller the sample interval, the larger the file will be.\n\nRecommend Value: 0.01 V\n\nRange: Integer greater than 0'),
           DropDownInput(
             labelStrings: ['10 nA/V', '1 uA/V', '1 mA/V'],
             values: GainSettings.values.toList(),

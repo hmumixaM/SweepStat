@@ -33,7 +33,8 @@ class _DropDownInputState extends State<DropDownInput> {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
+    return Padding(padding: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+    child: DropdownButtonFormField(
       hint: Text(widget.hint),
       value: selectedInput,
       onChanged: (value) {
@@ -51,6 +52,6 @@ class _DropDownInputState extends State<DropDownInput> {
       onSaved: (val) {
         widget.callback(val);
       },
-    );
+    ));
   }
 }
