@@ -52,17 +52,19 @@ class _AnalysisPage extends State<AnalysisPage> {
     return SafeArea(
         child: Column(
       children: [
-        Container(
-          height: 420,
-          width: 420,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 20,
-              left: 15,
-              right: 15,
+        Expanded(
+          child: Container(
+            height: 600,
+            width: 420,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 15,
+                right: 15,
+              ),
+              child: LineChartWidget(_curves),
+              // child: LineChartSample1(),
             ),
-            child: LineChartWidget(_curves),
-            // child: LineChartSample1(),
           ),
         ),
         Padding(

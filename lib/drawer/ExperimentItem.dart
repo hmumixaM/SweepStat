@@ -77,13 +77,6 @@ class ExperimentItem extends StatefulWidget {
 
 class _ExperimentItem extends State<ExperimentItem> {
 
-  /*final List<String> nameList = <String>['Experiment 1', 'Experiment 2', 'Experiment 3'];
-  final List<String> monthVList = <String>["Sep", "Oct", "Nov"];
-  final List<String> dateVList = <String>["29th", "2nd", "13th"];
-  final List<String> timeVList = <String>["13:24", "20:15", "8:54"];
-  final List<String> typeList = <String>['CV', 'CV', 'CV'];
-  List<ExperimentMetadata> ExperimentList = <ExperimentMetadata>[];*/
-
   List<Widget> buildExperimentDrawerMenu(List<Map> query, BuildContext context, void Function() onDelete) {
     var output = ExperimentItem.dbQueryToWidgets(query, true, context, onDelete);
     output.add(
@@ -109,16 +102,6 @@ class _ExperimentItem extends State<ExperimentItem> {
 
   @override
   Widget build(BuildContext context) {
-    /*for (int i=0; i<nameList.length; i++) {
-      ExperimentMetadata newExperiment = new ExperimentMetadata(
-        name: nameList[i],
-        month: monthVList[i],
-        date: dateVList[i],
-        time: timeVList[i],
-        type: typeList[i],
-      );
-      ExperimentList.add(newExperiment);
-    };*/
     return FutureBuilder(
       builder: (context, snapshot) {
         if (!snapshot.hasData) {

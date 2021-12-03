@@ -22,9 +22,9 @@ class _StateWidgetState extends State<StateWidget> {
       experiment: Experiment(),
       settings: VoltammetrySettings(
         initialVoltage: 0.0,
-        vertexVoltage: 1.0,
-        finalVoltage: -1.0,
-        sampleInterval: .01,
+        vertexVoltage: 0.5,
+        finalVoltage: 0.0,
+        sampleInterval: .1,
         sweepSegments: 2,
         scanRate: 0.5,
         gainSetting: GainSettings.uA1,
